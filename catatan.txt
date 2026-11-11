@@ -1,0 +1,121 @@
+# ==============================================================================
+# PANDUAN INISIALISASI & SETUP PROYEK ETACAFE (FULLSTACK)
+# Untuk Frontend & Backend Developer
+# ==============================================================================
+
+Halo! File ini berisi panduan lengkap langkah demi langkah untuk menjalankan backend,
+menghubungkan database PostgreSQL, serta menjalankan frontend agar bisa langsung lanjut develop.
+
+------------------------------------------------------------------------------
+A. STRUKTUR & KEBUTUHAN UTAMA
+------------------------------------------------------------------------------
+1. Python (versi 3.10 / 3.11 disarankan)
+2. PostgreSQL (sudah running di port 5432)
+3. Node.js / Bun (untuk frontend)
+
+------------------------------------------------------------------------------
+B. LANGKAH INISIALISASI DATABASE & BACKEND (PYTHON FASTAPI)
+------------------------------------------------------------------------------
+1. Buka terminal dan masuk ke folder `backend`:
+   cd backend
+
+2. Buat Virtual Environment (jika belum ada):
+   # Windows:
+   python -m venv venv
+
+3. Aktifkan Virtual Environment (Venv):
+   # Windows (PowerShell):
+   .\venv\Scripts\Activate.ps1
+   # Atau jika menggunakan Command Prompt (CMD):
+   .\venv\Scripts\activate.bat
+   # macOS / Linux:
+   source venv/bin/activate
+
+   (Jika muncul error Execution Policy di PowerShell, jalankan PowerShell as Admin lalu:
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser)
+
+4. Install seluruh dependensi backend:
+   pip install -r requirements.txt
+
+5. Konfigurasi file `.env` di dalam folder `backend/`:
+   Pastikan ada file `backend/.env` (bisa copy dari `backend/.env.example`).
+   Sesuaikan `DATABASE_URL` dengan password postgres masing-masing:
+
+   DATABASE_URL=postgresql+psycopg2://<USER_POSTGRES>:<PASSWORD_POSTGRES>@localhost:5432/EtaCafe_db
+
+
+6. Buat Database Kosong di PostgreSQL:
+   - Buka DBeaver atau pgAdmin.
+   - Buat database baru bernama: EtaCafe_db
+
+7. Eksekusi Script Inisialisasi Database (Auto-Migrate + Seed Data):
+   Jalankan perintah ini di dalam folder `backend` dengan venv aktif:
+   python init_db.py
+
+   -> Script ini akan otomatis membuat tabel:
+      - users
+      - categories
+      - menu_items
+      - promos
+      - orders
+      - order_items
+   -> Serta mengisi data awal (kategori, menu, promo, dan 4 akun role).
+
+8. Menjalankan Backend Server:
+   uvicorn app.main:app --reload --port 8000
+
+   - API Documentation (Swagger UI): http://localhost:8000/docs
+   - API Alternatif (ReDoc): http://localhost:8000/redoc
+
+------------------------------------------------------------------------------
+C. DATA AWAL (SEED DATA) UNTUK INTEGRASI FRONTEND
+------------------------------------------------------------------------------
+Database sudah dilengkapi dengan akun uji coba untuk 4 role (Semua password: rahasia123):
+
+1. Role: PELANGGAN
+   - Email/Phone: kevin@etacafe.com
+   - Password   : rahasia123
+   - Nama       : Kevin Somakila (Pelanggan)
+
+2. Role: KASIR
+   - Email/Phone: kasir@etacafe.com
+   - Password   : rahasia123
+   - Nama       : Ahmad Kasir (Kasir EtaCafe)
+
+3. Role: DAPUR
+   - Email/Phone: dapur@etacafe.com
+   - Password   : rahasia123
+   - Nama       : Hilmy Chef (Dapur EtaCafe)
+
+4. Role: MANAJER
+   - Email/Phone: manajer@etacafe.com
+   - Password   : rahasia123
+   - Nama       : Agung Manajer (Manajer EtaCafe)
+
+Katalog & Data Lainnya yang Tersedia:
+- Kategori : 4 Kategori (Kopi & Minuman, Makanan Utama, Camilan & Snack, Dessert & Penutup)
+- Menu     : 10 Menu lengkap dengan harga, deskripsi, gambar, dan status ketersediaan.
+- Kupon    :
+   * "ETASPESIAL10" (Diskon 10%, min order Rp 40.000)
+   * "HEMAT5RB"     (Potongan tetap Rp 5.000, min order Rp 25.000)
+
+------------------------------------------------------------------------------
+D. MENJALANKAN FRONTEND (REACT / VITE)
+------------------------------------------------------------------------------
+1. Buka terminal baru di root folder proyek:
+   cd "c:\Users\ASUS\OneDrive\Desktop\SEMESTER 5\Proyek Sistem Informasi\Sistem Manajemen Pemesanan Kafe"
+
+2. Install dependensi frontend:
+   npm install
+   # Atau jika memakai bun:
+   bun install
+
+3. Jalankan server frontend:
+   npm run dev
+   # Atau:
+   bun dev
+
+4. Buka di browser:
+   http://localhost:5173
+
+Frontend sudah siap dikembangkan dan langsung terkoneksi ke backend di port 8000!

@@ -1,0 +1,483 @@
+/* KasirLayout.css - EtaCafe Kasir Layout (sesuai Figma) */
+
+/* ═══════════════════ WRAPPER ═══════════════════ */
+.kasir-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fdf8ee;
+  color: #2c1810;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ═══════════════════ MAIN CONTENT ═══════════════════ */
+.kasir-container {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+/* ═══════════════════ FOOTER TABS (FIGMA: Dikonfirmasi | Proses | Selesai) ═══════════════════ */
+.kasir-footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2c1810;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-shadow: 0 -4px 16px rgba(44, 24, 16, 0.3);
+  z-index: 90;
+}
+
+.kasir-footer-pill {
+  padding: 12px 48px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e6dfd8;
+  color: #524741;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  min-width: 150px;
+  text-align: center;
+}
+
+.kasir-footer-pill:hover {
+  background-color: #dbd2c8;
+  color: #2c1810;
+  transform: translateY(-2px);
+}
+
+.kasir-footer-pill.active {
+  background-color: #8c7d73;
+  color: #ffffff;
+}
+
+/* ═══════════════════ ORDER CARD (FIGMA: Meja image + detail) ═══════════════════ */
+.kasir-order-card {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 48px;
+  align-items: flex-start;
+}
+
+.kasir-order-card-meja {
+  width: 240px;
+  height: 200px;
+  background-color: #a89585;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.kasir-order-card-detail {
+  flex: 1;
+}
+
+.kasir-order-card-detail h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: #2c1810;
+}
+
+/* Item rows within order card */
+.kasir-order-item-row {
+  display: flex;
+  align-items: baseline;
+  padding: 4px 0;
+  font-size: 15px;
+  color: #2c1810;
+}
+
+.kasir-order-item-qty {
+  width: 40px;
+  flex-shrink: 0;
+  color: #666;
+}
+
+.kasir-order-item-name {
+  flex: 1;
+  color: #333;
+}
+
+.kasir-order-item-price {
+  text-align: right;
+  width: 120px;
+  flex-shrink: 0;
+  color: #333;
+}
+
+.kasir-order-total-row {
+  display: flex;
+  align-items: baseline;
+  padding: 8px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c1810;
+}
+
+.kasir-order-total-row .kasir-order-item-name {
+  font-weight: 600;
+}
+
+.kasir-order-total-row .kasir-order-item-price {
+  font-weight: 700;
+}
+
+/* Action buttons under order card (Proses, Lihat Struk) */
+.kasir-order-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.kasir-order-btn {
+  padding: 10px 32px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid #2c1810;
+  background: transparent;
+  color: #2c1810;
+}
+
+.kasir-order-btn:hover {
+  background-color: #2c1810;
+  color: #fff;
+}
+
+.kasir-order-btn.primary {
+  background-color: #2c1810;
+  color: #fff;
+  border-color: #2c1810;
+}
+
+.kasir-order-btn.primary:hover {
+  background-color: #1a0f0a;
+}
+
+/* ═══════════════════ STRUK / RECEIPT (FIGMA: Struk Kasir) ═══════════════════ */
+.kasir-struk {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.kasir-struk h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #2c1810;
+}
+
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0d5c8;
+}
+
+.receipt-header h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: #2c1810;
+}
+
+.receipt-header p,
+.receipt-customer-info p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.receipt-customer-info {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0d5c8;
+}
+
+.receipt-items {
+  margin-bottom: 16px;
+}
+
+.receipt-items h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.receipt-items table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.receipt-items th,
+.receipt-items td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0d5c8;
+  font-size: 14px;
+}
+
+.receipt-items th {
+  font-weight: 600;
+  color: #2c1810;
+}
+
+.receipt-totals {
+  margin-bottom: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #e0d5c8;
+}
+
+.receipt-totals p {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.receipt-totals hr {
+  border: none;
+  border-top: 2px solid #2c1810;
+  margin: 12px 0;
+}
+
+.receipt-payment,
+.receipt-status {
+  margin-bottom: 12px;
+}
+
+.receipt-payment p,
+.receipt-status p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.receipt-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.receipt-actions .btn-confirm {
+  padding: 10px 28px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid #2c1810;
+  background: transparent;
+  color: #2c1810;
+  transition: all 0.2s;
+}
+
+.receipt-actions .btn-confirm:hover {
+  background-color: #2c1810;
+  color: #fff;
+}
+
+/* ═══════════════════ EMPTY STATE ═══════════════════ */
+.kasir-empty-state {
+  text-align: center;
+  padding: 64px 0;
+  color: #999;
+}
+
+.kasir-empty-state p {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+/* ═══════════════════ STRUK / RECEIPT (KONSISTEN 100% DENGAN DAPUR) ═══════════════════ */
+.kasir-receipt-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 0 60px;
+}
+
+.kasir-receipt-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 32px 28px;
+  position: relative;
+  font-family: 'Courier New', Courier, monospace;
+  border: 1px solid #e0d5c8;
+}
+
+.kasir-receipt-header {
+  text-align: center;
+  border-bottom: 2px dashed #333333;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.kasir-receipt-shop-name {
+  font-family: 'Dancing Script', 'Brush Script MT', cursive;
+  font-size: 34px;
+  font-weight: 700;
+  color: #2c1810;
+  margin: 0;
+}
+
+.kasir-receipt-subtitle {
+  font-size: 12px;
+  color: #666666;
+  margin-top: 4px;
+}
+
+.kasir-receipt-badge {
+  font-size: 11px;
+  color: #844c1c;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.kasir-receipt-meta {
+  font-size: 13px;
+  line-height: 1.7;
+  border-bottom: 1px dashed #cccccc;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.kasir-receipt-items {
+  border-bottom: 2px dashed #333333;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.kasir-receipt-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.kasir-receipt-totals {
+  font-size: 14px;
+  line-height: 1.8;
+  border-bottom: 2px dashed #333333;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.kasir-receipt-total-main {
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  color: #2c1810;
+}
+
+.kasir-receipt-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin-top: 8px;
+}
+
+.kasir-receipt-btn-back {
+  padding: 10px 24px;
+  background-color: #e6dfd8;
+  color: #2c1810;
+  border: 1px solid #d4c5b9;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.kasir-receipt-btn-back:hover {
+  background-color: #dbd2c8;
+}
+
+.kasir-receipt-btn-print {
+  padding: 10px 28px;
+  background-color: #2c1810;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.kasir-receipt-btn-print:hover {
+  background-color: #1a0f0a;
+}
+
+/* ═══════════════════ RESPONSIVE ═══════════════════ */
+@media (max-width: 768px) {
+  .kasir-order-card {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .kasir-order-card-meja {
+    width: 100%;
+    height: 90px;
+  }
+  .kasir-footer-pill {
+    padding: 10px 20px;
+    font-size: 12px;
+    min-width: auto;
+  }
+  .kasir-receipt-card {
+    padding: 24px 18px;
+  }
+}
+
+/* ═══════════════════ PRINT MEDIA ═══════════════════ */
+@media print {
+  .no-print,
+  .etacafe-navbar,
+  .kasir-footer-nav,
+  .kasir-receipt-actions {
+    display: none !important;
+  }
+  .kasir-container {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+  .kasir-wrapper {
+    background: #ffffff !important;
+  }
+  .kasir-receipt-card {
+    box-shadow: none !important;
+    border: none !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body {
+    background: #ffffff !important;
+  }
+}

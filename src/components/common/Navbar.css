@@ -1,0 +1,135 @@
+/* Navbar.css - EtaCafe Figma Espresso Header */
+.etacafe-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background-color: #2c1810;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(44, 24, 16, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.etacafe-navbar-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.etacafe-navbar-logo-script {
+  font-family: 'Brush Script MT', 'Caveat', 'Dancing Script', 'Playfair Display', cursive, serif;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.etacafe-navbar-tagline {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #ebdccb;
+  opacity: 0.8;
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .etacafe-navbar-tagline {
+    display: inline;
+  }
+}
+
+.etacafe-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.etacafe-navbar-user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.etacafe-navbar-user-name {
+  font-weight: 600;
+  color: #fdf8ee;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.etacafe-navbar-role-pill {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background-color: #844c1c;
+  color: #ffffff;
+}
+
+.etacafe-navbar-role-pill--kasir {
+  background-color: #0284c7;
+}
+
+.etacafe-navbar-role-pill--dapur {
+  background-color: #ea580c;
+}
+
+.etacafe-navbar-role-pill--manajer {
+  background-color: #7c3aed;
+}
+
+.etacafe-navbar-role-pill--pelanggan {
+  background-color: #16a34a;
+}
+
+.etacafe-navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.etacafe-navbar-link {
+  color: #ebdccb;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  transition: all 0.2s;
+}
+
+.etacafe-navbar-link:hover,
+.etacafe-navbar-link.active {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.etacafe-navbar-logout-btn {
+  background-color: transparent;
+  color: #ebdccb;
+  border: 1px solid rgba(235, 220, 203, 0.4);
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.etacafe-navbar-logout-btn:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+}
+

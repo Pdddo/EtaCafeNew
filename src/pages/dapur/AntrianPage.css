@@ -1,0 +1,603 @@
+/* ============================================================
+   AntrianPage.css — Kitchen Display System (Role Dapur)
+   Desain 100% Presisi Berdasarkan Figma (Dikonfirmasi, Proses, Selesai)
+   ============================================================ */
+
+/* Container Utama Halaman Dapur */
+.dapur-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff;
+  color: #2c1810;
+  font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 1. Bar Status Paling Atas (di atas Navbar sesuai Figma) */
+.dapur-top-status-bar {
+  background-color: #111111;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 24px;
+  letter-spacing: 0.3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dapur-top-status-title {
+  font-size: 15px;
+  color: #cccccc;
+}
+
+.dapur-top-status-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #aaaaaa;
+}
+
+.dapur-refresh-badge {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #eee;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.dapur-refresh-badge:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* 2. Header / Navbar Cokelat Gelap (Figma: "Coffee Shop" | "Products" "Checkout") */
+.dapur-header-navbar {
+  background-color: #2c1810;
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dapur-header-brand {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dapur-header-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.dapur-header-link {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: opacity 0.2s;
+}
+
+.dapur-header-link:hover {
+  opacity: 0.8;
+}
+
+.dapur-header-logout {
+  color: #e09f80;
+  font-size: 14px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(224, 159, 128, 0.4);
+  border-radius: 16px;
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dapur-header-logout:hover {
+  background: #e09f80;
+  color: #2c1810;
+}
+
+/* 3. Filter Tanggal di Tab Selesai */
+.dapur-date-filter-bar {
+  background-color: #f8f6f2;
+  border-bottom: 1px solid #e8e2d8;
+  padding: 12px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dapur-date-filter-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5c4a3e;
+}
+
+.dapur-date-filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dapur-date-input {
+  padding: 6px 12px;
+  border: 1.5px solid #d4c7b8;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #2c1810;
+  background: #ffffff;
+  outline: none;
+}
+
+.dapur-date-input:focus {
+  border-color: #7b4a1e;
+}
+
+.dapur-date-btn-today {
+  padding: 6px 14px;
+  background-color: #7b4a1e;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dapur-date-btn-today:hover {
+  background-color: #5a3414;
+}
+
+/* 4. Area Konten Utama */
+.dapur-main-content {
+  flex: 1;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 36px 20px 140px; /* Space bawah untuk footer tetap */
+}
+
+/* Pesan Toast / Alert Notifikasi Perubahan Status */
+.dapur-toast {
+  background-color: #2c1810;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 5. Kartu Pesanan Sesuai Figma */
+.dapur-card {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 20px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1.5px solid #ede8e0;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dapur-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Kotak Nomor Meja di Sisi Kiri (Figma: Meja 2, Meja 4, Meja 5) */
+.dapur-card-left-box {
+  width: 220px;
+  min-width: 200px;
+  background-color: #7b6f65; /* Warna taupe/abu-abu kecokelatan sesuai Figma */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+  border-radius: 18px;
+  margin: 12px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dapur-card-table-text {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.dapur-card-order-type {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 8px;
+  text-transform: capitalize;
+}
+
+.dapur-card-time {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 4px;
+}
+
+/* Sisi Kanan: Detail Pesanan */
+.dapur-card-right-content {
+  flex: 1;
+  padding: 24px 28px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dapur-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+}
+
+/* Daftar Item Pesanan */
+.dapur-card-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.dapur-card-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+  color: #333333;
+}
+
+.dapur-card-item-name {
+  font-weight: 500;
+  flex: 1;
+  padding-right: 16px;
+}
+
+.dapur-card-item-price {
+  font-weight: 500;
+  color: #222222;
+  white-space: nowrap;
+}
+
+.dapur-card-item-notes {
+  font-size: 12px;
+  color: #a05a2c;
+  background-color: #fdf5e6;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-top: 3px;
+  margin-left: 20px;
+  display: inline-block;
+}
+
+/* Baris Total */
+.dapur-card-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed #dcd4c8;
+  padding-top: 12px;
+  margin-top: 4px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Tombol Aksi di Kartu (Figma: [Proses] [Lihat Struk] atau [Selesai] [Lihat Struk]) */
+.dapur-card-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.dapur-btn-action {
+  padding: 8px 28px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1.5px solid #2c1810;
+  background: transparent;
+  color: #2c1810;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.dapur-btn-action:hover {
+  background-color: #2c1810;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.dapur-btn-action.btn-primary-action {
+  border-color: #7b4a1e;
+  color: #7b4a1e;
+}
+
+.dapur-btn-action.btn-primary-action:hover {
+  background-color: #7b4a1e;
+  color: #ffffff;
+}
+
+/* Empty State */
+.dapur-empty-state {
+  text-align: center;
+  padding: 64px 20px;
+  color: #888888;
+}
+
+.dapur-empty-icon {
+  font-size: 54px;
+  margin-bottom: 16px;
+}
+
+.dapur-empty-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4a3e36;
+  margin-bottom: 6px;
+}
+
+.dapur-empty-subtitle {
+  font-size: 14px;
+  color: #8c827a;
+}
+
+/* 6. Footer Cokelat Gelap dengan Tab Figma (Dikonfirmasi | Proses | Selesai) */
+.dapur-footer-navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2c1810;
+  padding: 16px 28px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25);
+  z-index: 100;
+}
+
+.dapur-footer-top {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dapur-footer-brand-box {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.dapur-footer-brand-logo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.dapur-footer-brand-tagline {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.5px;
+}
+
+/* Pill Tabs di Tengah Footer */
+.dapur-footer-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.dapur-footer-tab-pill {
+  padding: 10px 32px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background-color: #ffffff;
+  color: #2c1810;
+}
+
+.dapur-footer-tab-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Tab Aktif (Figma: background abu-abu kecokelatan #8c7d73, teks putih) */
+.dapur-footer-tab-pill.active {
+  background-color: #8c7d73;
+  color: #ffffff;
+}
+
+.dapur-footer-copyright {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
+/* 7. Modal Struk Pesanan (Receipt Modal) */
+.dapur-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.dapur-receipt-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding: 28px 24px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.dapur-receipt-header {
+  text-align: center;
+  border-bottom: 2px dashed #333333;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.dapur-receipt-shop-name {
+  font-family: 'Dancing Script', cursive;
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c1810;
+  margin: 0;
+}
+
+.dapur-receipt-subtitle {
+  font-size: 12px;
+  color: #666666;
+  margin-top: 4px;
+}
+
+.dapur-receipt-meta {
+  font-size: 13px;
+  line-height: 1.6;
+  border-bottom: 1px dashed #cccccc;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.dapur-receipt-items {
+  border-bottom: 2px dashed #333333;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.dapur-receipt-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.dapur-receipt-totals {
+  font-size: 14px;
+  line-height: 1.8;
+  border-bottom: 2px dashed #333333;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.dapur-receipt-total-main {
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.dapur-receipt-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  font-family: 'Lato', sans-serif;
+}
+
+.dapur-receipt-btn-close {
+  padding: 8px 20px;
+  background-color: #e0e0e0;
+  color: #333333;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dapur-receipt-btn-print {
+  padding: 8px 20px;
+  background-color: #2c1810;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Responsiveness */
+@media (max-width: 640px) {
+  .dapur-card {
+    flex-direction: column;
+  }
+  .dapur-card-left-box {
+    width: auto;
+    margin: 12px 12px 0 12px;
+    border-radius: 12px;
+  }
+  .dapur-card-right-content {
+    padding: 16px;
+  }
+  .dapur-footer-navbar {
+    padding: 12px 16px;
+  }
+  .dapur-footer-tab-pill {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  .dapur-footer-brand-box {
+    display: none;
+  }
+}

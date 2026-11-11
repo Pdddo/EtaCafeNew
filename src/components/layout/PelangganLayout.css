@@ -1,0 +1,203 @@
+/* PelangganLayout.css — Exact styles from frontend-pelanggan/style.css */
+
+.pelanggan-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
+  color: var(--text-dark, #2C1008);
+  font-family: 'Lato', sans-serif;
+}
+
+.pelanggan-navbar {
+  background: var(--brown-dark, #3B1A0A);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.pelanggan-navbar-logo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white, #FFFFFF);
+  letter-spacing: 1px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: none;
+}
+
+.pelanggan-navbar-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.pelanggan-nav-link {
+  color: var(--white, #FFFFFF);
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.9;
+  transition: opacity 0.25s ease;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.pelanggan-nav-link:hover {
+  opacity: 1;
+}
+
+.pelanggan-nav-link.active {
+  font-weight: 700;
+}
+
+.pelanggan-cart-badge {
+  position: relative;
+  display: inline-block;
+}
+
+.pelanggan-cart-badge .pelanggan-badge {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  background: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.pelanggan-nav-divider {
+  height: 4px;
+  background: var(--white, #FFFFFF);
+}
+
+.pelanggan-main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pelanggan-footer {
+  background: var(--brown-dark, #3B1A0A);
+  color: var(--white, #FFFFFF);
+  padding: 18px 40px 14px;
+  flex-shrink: 0;
+  z-index: 100;
+  box-shadow: 0 -3px 16px rgba(0, 0, 0, 0.25);
+}
+
+.pelanggan-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pelanggan-footer-brand-logo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.pelanggan-footer-brand-tagline {
+  font-size: 13px;
+  opacity: 0.7;
+  letter-spacing: 0.5px;
+}
+
+.pelanggan-footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 44px;
+  width: 100%;
+  max-width: 960px;
+  margin: 12px auto 18px;
+}
+
+.pelanggan-footer-pill {
+  background: #dbd6d0;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #2c1008;
+  border-radius: 9999px;
+  padding: 11px 36px;
+  min-width: 175px;
+  text-align: center;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
+  opacity: 0.92;
+  font-family: inherit;
+}
+
+.pelanggan-footer-pill:hover {
+  background: #eae6e2;
+  color: #1a0804;
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.pelanggan-footer-pill.active {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #23120b !important;
+  font-weight: 800 !important;
+  opacity: 1 !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.42), 0 0 0 2px rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-2px) scale(1.02);
+}
+
+@media (max-width: 768px) {
+  .pelanggan-navbar {
+    padding: 14px 20px;
+  }
+  .pelanggan-navbar-links {
+    gap: 16px;
+  }
+  .pelanggan-footer-links {
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 8px auto 14px;
+  }
+  .pelanggan-footer-pill {
+    min-width: 125px;
+    padding: 9px 20px;
+    font-size: 13px;
+  }
+}
+
+.pelanggan-footer-copy {
+  font-size: 11px;
+  opacity: 0.5;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+  text-align: left;
+}
+

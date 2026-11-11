@@ -1,0 +1,6 @@
+{
+  "name": "RestoFlow - Sistem Manajemen Pesanan Restoran & Kafe",
+  "description": "Sistem Manajemen Pesanan Restoran/Kafe sesuai SRS v1.2 Unhas dengan 4 Role (Pelanggan, Kasir, Dapur, Manajer) dan Pusat Panduan & Kode Backend FastAPI PostgreSQL.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

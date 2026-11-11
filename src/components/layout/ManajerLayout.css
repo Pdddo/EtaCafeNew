@@ -1,0 +1,454 @@
+/* ManajerLayout.css - EtaCafe Manager Layout & Styles Sesuai Desain Figma */
+
+/* ═══════════════════ WRAPPER & SUBNAV ═══════════════════ */
+.manajer-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fdf8ee;
+  color: #2c1810;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.manajer-subnav {
+  background-color: #faf3e5;
+  border-bottom: 1px solid #ebdccb;
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 60px;
+  z-index: 80;
+}
+
+.manajer-subnav-pill {
+  padding: 8px 22px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  background-color: #f0e6d9;
+  color: #5c381e;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.manajer-subnav-pill:hover {
+  background-color: #e5d8c6;
+  color: #2c1810;
+}
+
+.manajer-subnav-pill.active {
+  background-color: #844c1c;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(132, 76, 28, 0.25);
+}
+
+.manajer-container {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* ═══════════════════ HEADER PAGE MANAJER ═══════════════════ */
+.manajer-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.manajer-page-title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0;
+  color: #2c1810;
+}
+
+.manajer-page-subtitle {
+  font-size: 14px;
+  color: #665c54;
+  margin: 4px 0 0;
+}
+
+/* ═══════════════════ TOMBOL & AKSI ═══════════════════ */
+.manajer-btn {
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1.5px solid #2c1810;
+  background-color: transparent;
+  color: #2c1810;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.manajer-btn:hover {
+  background-color: #2c1810;
+  color: #ffffff;
+}
+
+.manajer-btn-primary {
+  background-color: #2c1810;
+  color: #ffffff;
+  border-color: #2c1810;
+}
+
+.manajer-btn-primary:hover {
+  background-color: #1a0f0a;
+}
+
+.manajer-btn-danger {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+.manajer-btn-danger:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+/* ═══════════════════ KARTU MENU (FIGMA: Product edit.png) ═══════════════════ */
+.manajer-menu-card {
+  display: flex;
+  gap: 28px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #ebdccb;
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.05);
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.manajer-menu-card:hover {
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.09);
+}
+
+.manajer-menu-card-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 16px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: #e6ded5;
+}
+
+.manajer-menu-info {
+  flex: 1;
+}
+
+.manajer-menu-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.manajer-menu-status-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c1810;
+  margin: 0;
+}
+
+/* TOGGLE SWITCH KETERSEDIAAN (FIGMA: on | off pill) */
+.manajer-toggle-pill {
+  display: inline-flex;
+  border-radius: 9999px;
+  background-color: #e6ded5;
+  border: 1px solid #d4c5b9;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.manajer-toggle-pill-option {
+  padding: 4px 16px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #665c54;
+  transition: all 0.2s;
+}
+
+.manajer-toggle-pill-option.active-on {
+  background-color: #844c1c;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(132, 76, 28, 0.3);
+}
+
+.manajer-toggle-pill-option.active-off {
+  background-color: #dc2626;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+}
+
+.manajer-menu-details-row {
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #333333;
+}
+
+.manajer-menu-details-row strong {
+  color: #2c1810;
+}
+
+.manajer-menu-card-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* ═══════════════════ LAPORAN PENJUALAN (FIGMA: Laporan Keuangan.png) ═══════════════════ */
+.manajer-analytics-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #ebdccb;
+  box-shadow: 0 6px 20px rgba(44, 24, 16, 0.06);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.manajer-analytics-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #2c1810;
+  margin: 0 0 12px;
+}
+
+.manajer-analytics-number {
+  font-size: 48px;
+  font-weight: 800;
+  color: #844c1c;
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+}
+
+.manajer-analytics-trend {
+  font-size: 14px;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.manajer-top-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+  margin: 20px auto 0;
+  text-align: left;
+}
+
+.manajer-top-item-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.manajer-top-item-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: #e6ded5;
+}
+
+.manajer-top-item-bar-wrapper {
+  flex: 1;
+}
+
+.manajer-top-item-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2c1810;
+  margin-bottom: 4px;
+}
+
+.manajer-top-item-progress-track {
+  height: 10px;
+  background-color: #e6ded5;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.manajer-top-item-progress-fill {
+  height: 100%;
+  background-color: #844c1c;
+  border-radius: 9999px;
+}
+
+/* ═══════════════════ USER MANAGEMENT (FIGMA: User Management.png) ═══════════════════ */
+.manajer-user-role-section {
+  margin-bottom: 36px;
+}
+
+.manajer-user-role-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #844c1c;
+  margin: 0 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #ebdccb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manajer-user-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 16px 20px;
+  border: 1px solid #ebdccb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(44, 24, 16, 0.04);
+}
+
+.manajer-user-info-field {
+  margin: 3px 0;
+  font-size: 14px;
+  color: #333333;
+}
+
+.manajer-user-info-field strong {
+  color: #2c1810;
+  min-width: 70px;
+  display: inline-block;
+}
+
+.manajer-user-action-btns {
+  display: flex;
+  gap: 12px;
+}
+
+.manajer-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+
+.manajer-icon-btn:hover {
+  background-color: #f0e6d9;
+}
+
+/* ═══════════════════ MODAL FORM DIALOG ═══════════════════ */
+.manajer-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(44, 24, 16, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.manajer-modal-content {
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 540px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #ebdccb;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.manajer-modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #2c1810;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #844c1c;
+}
+
+.manajer-form-group {
+  margin-bottom: 16px;
+}
+
+.manajer-form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2c1810;
+  margin-bottom: 6px;
+}
+
+.manajer-form-input,
+.manajer-form-select,
+.manajer-form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #d4c5b9;
+  font-size: 14px;
+  background-color: #faf6f0;
+  outline: none;
+  color: #2c1810;
+  transition: border-color 0.2s;
+}
+
+.manajer-form-input:focus,
+.manajer-form-select:focus,
+.manajer-form-textarea:focus {
+  border-color: #844c1c;
+  background-color: #ffffff;
+}
+
+.manajer-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e6ded5;
+}
+
+/* Responsive */
+@media (max-width: 680px) {
+  .manajer-menu-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .manajer-menu-card-img {
+    width: 100%;
+    height: 160px;
+  }
+  .manajer-menu-status-bar {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .manajer-menu-card-actions {
+    justify-content: center;
+  }
+}

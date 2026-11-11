@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Lato:wght@300;400;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --brown-dark:  #3B1A0A;
+  --brown-mid:   #7B4A1E;
+  --brown-light: #A0693A;
+  --cream:       #FBF5E6;
+  --cream-dark:  #F0E8D0;
+  --white:       #FFFFFF;
+  --text-dark:   #2C1008;
+  --text-mid:    #5C3317;
+  --text-light:  #8B6347;
+  --shadow:      0 4px 20px rgba(59, 26, 10, 0.18);
+  --radius:      12px;
+  --transition:  0.25s ease;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,114 @@
+/* DapurLayout.css - Kitchen Display System Layout */
+.dapur-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fdf8ee;
+  color: #2c1810;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.dapur-container {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px 100px;
+}
+
+.dapur-footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2c1810;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-shadow: 0 -4px 16px rgba(44, 24, 16, 0.3);
+  z-index: 90;
+}
+
+.dapur-footer-pill {
+  padding: 12px 28px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e6dfd8;
+  color: #524741;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dapur-footer-pill:hover {
+  background-color: #dbd2c8;
+  color: #2c1810;
+  transform: translateY(-2px);
+}
+
+.dapur-footer-pill.active {
+  background-color: #8c7d73;
+  color: #ffffff;
+}
+
+/* DapurLayout.css - Kitchen Display System Layout */
+.dapur-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fdf8ee;
+  color: #2c1810;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.dapur-container {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px 100px;
+}
+
+.dapur-footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2c1810;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-shadow: 0 -4px 16px rgba(44, 24, 16, 0.3);
+  z-index: 90;
+}
+
+.dapur-footer-pill {
+  padding: 12px 28px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e6dfd8;
+  color: #524741;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dapur-footer-pill:hover {
+  background-color: #dbd2c8;
+  color: #2c1810;
+  transform: translateY(-2px);
+}
+
+.dapur-footer-pill.active {
+  background-color: #8c7d73;
+  color: #ffffff;
+}
+

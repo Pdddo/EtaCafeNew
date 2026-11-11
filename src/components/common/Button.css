@@ -1,0 +1,151 @@
+/* Button.css - Figma Style EtaCafe Buttons */
+.etacafe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: 9999px; /* Pill shape */
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  outline: none;
+  border: 2px solid transparent;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.etacafe-btn:disabled,
+.etacafe-btn--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Sizes */
+.etacafe-btn--sm {
+  padding: 6px 16px;
+  font-size: 13px;
+  min-height: 32px;
+}
+
+.etacafe-btn--md {
+  padding: 10px 24px;
+  font-size: 15px;
+  min-height: 44px;
+}
+
+.etacafe-btn--lg {
+  padding: 14px 32px;
+  font-size: 17px;
+  min-height: 52px;
+}
+
+/* Variant: Primary (Warm Brown) */
+.etacafe-btn--primary {
+  background-color: #844c1c;
+  color: #ffffff;
+  border-color: #844c1c;
+  box-shadow: 0 4px 10px rgba(132, 76, 28, 0.25);
+}
+
+.etacafe-btn--primary:hover:not(:disabled) {
+  background-color: #6e3e16;
+  border-color: #6e3e16;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(132, 76, 28, 0.35);
+}
+
+.etacafe-btn--primary:active:not(:disabled) {
+  transform: translateY(0);
+  background-color: #5a3211;
+}
+
+/* Variant: Outline (Figma Classic - Dark Espresso border with rounded pill) */
+.etacafe-btn--outline {
+  background-color: transparent;
+  color: #2c1810;
+  border-color: #2c1810;
+  border-width: 2px;
+}
+
+.etacafe-btn--outline:hover:not(:disabled) {
+  background-color: #2c1810;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.etacafe-btn--outline:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Variant: Pill (Figma Footer & Tab pill style) */
+.etacafe-btn--pill {
+  background-color: #e6dfd8;
+  color: #524741;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.etacafe-btn--pill:hover:not(:disabled) {
+  background-color: #dbd2c8;
+  color: #2c1810;
+  transform: translateY(-1px);
+}
+
+.etacafe-btn--pill.active,
+.etacafe-btn--pill--active {
+  background-color: #844c1c;
+  color: #ffffff;
+}
+
+/* Variant: Danger */
+.etacafe-btn--danger {
+  background-color: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+}
+
+.etacafe-btn--danger:hover:not(:disabled) {
+  background-color: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.etacafe-btn--danger-outline {
+  background-color: transparent;
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.etacafe-btn--danger-outline:hover:not(:disabled) {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+/* Variant: Ghost */
+.etacafe-btn--ghost {
+  background-color: transparent;
+  color: #5c381e;
+}
+
+.etacafe-btn--ghost:hover:not(:disabled) {
+  background-color: rgba(92, 56, 30, 0.08);
+}
+
+/* Spinner inside button */
+.etacafe-btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: etacafe-spin 0.7s linear infinite;
+}
+
+@keyframes etacafe-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
