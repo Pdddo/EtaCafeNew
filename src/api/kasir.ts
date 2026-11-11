@@ -61,6 +61,10 @@ export async function getCategories(): Promise<any[]> {
   return request<any[]>('/pelanggan/categories');
 }
 
+export async function getPromos(): Promise<any[]> {
+  return request<any[]>('/pelanggan/promos');
+}
+
 export async function getMenu(kategoriId?: number, search?: string): Promise<any[]> {
   const query = new URLSearchParams();
   if (kategoriId) query.append('kategori_id', String(kategoriId));
@@ -83,6 +87,7 @@ export const KasirAPI = {
   confirmOrder,
   getReceipt,
   getCategories,
+  getPromos,
   getMenu,
   createOrder,
 };

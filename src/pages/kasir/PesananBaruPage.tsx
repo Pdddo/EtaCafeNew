@@ -34,21 +34,26 @@ export default function PesananBaruPage() {
   const [paymentMethod, setPaymentMethod] = useState<'QRIS' | 'Tunai' | 'Kartu'>('QRIS');
   const [autoConfirmToKitchen, setAutoConfirmToKitchen] = useState(true);
 
+  // Promo / Voucher Diskon
+  const [promos, setPromos] = useState<any[]>([]);
+  const [selectedPromoCode, setSelectedPromoCode] = useState<string>('');
+
   // Cart
   const [cart, setCart] = useState<CartEntry[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Load Categories & Menu
+  // Load Categories, Menu & Promos
   useEffect(() => {
     if (!isAuthenticated || authLoading) return;
 
     const loadData = async () => {
       setLoading(true);
       try {
-        const [catData, menuData] = await Promise.all([
+        const [catData, menuData, promoData] = await Promise.all([
           KasirAPI.getCategories(),
           KasirAPI.getMenu(),
+          KasirAPI.getPromos().catch(() => []),
         ]);
 
         if (Array.isArray(catData)) {
@@ -56,6 +61,9 @@ export default function PesananBaruPage() {
         }
         if (Array.isArray(menuData)) {
           setMenuItems(menuData);
+        }
+        if (Array.isArray(promoData)) {
+          setPromos(promoData.filter((p: any) => p.is_active));
         }
       } catch (err: any) {
         console.error('Gagal memuat data menu/kategori:', err);
@@ -84,14 +92,33 @@ export default function PesananBaruPage() {
     });
   }, [menuItems, selectedCategoryId, searchKeyword]);
 
-  // Perhitungan Biaya
+  // Perhitungan Biaya & Diskon
   const subtotal = useMemo(() => {
     return cart.reduce((acc, curr) => acc + curr.menuItem.price * curr.quantity, 0);
   }, [cart]);
 
-  const taxAmount = Math.round(subtotal * 0.1); // Pajak 10%
-  const serviceFee = subtotal > 0 ? Math.round(subtotal * 0.05) : 0; // Biaya Layanan 5%
-  const grandTotal = subtotal + taxAmount + serviceFee;
+  const matchedPromo = useMemo(() => {
+    if (!selectedPromoCode) return null;
+    return promos.find(
+      (p) => p.code.toUpperCase() === selectedPromoCode.toUpperCase() && p.is_active
+    );
+  }, [selectedPromoCode, promos]);
+
+  const discountAmount = useMemo(() => {
+    if (!matchedPromo) return 0;
+    const minOrder = Number(matchedPromo.min_order || 0);
+    if (subtotal < minOrder) return 0;
+
+    if (matchedPromo.discount_type === 'percentage' || matchedPromo.discount_type === 'persentase') {
+      return Math.round((subtotal * Number(matchedPromo.discount_value)) / 100);
+    }
+    return Math.min(Number(matchedPromo.discount_value), subtotal);
+  }, [matchedPromo, subtotal]);
+
+  const taxableAmount = Math.max(0, subtotal - discountAmount);
+  const taxAmount = Math.round(taxableAmount * 0.1); // Pajak 10%
+  const serviceFee = taxableAmount > 0 ? Math.round(taxableAmount * 0.05) : 0; // Biaya Layanan 5%
+  const grandTotal = taxableAmount + taxAmount + serviceFee;
 
   // Cart Actions
   const handleAddToCart = (menuItem: MenuItem) => {
@@ -152,7 +179,8 @@ export default function PesananBaruPage() {
       customer_name: customerName.trim(),
       customer_phone: customerPhone.trim() || undefined,
       order_type: orderType,
-      table_number: orderType === 'qr_meja' ? tableNumber : (tableNumber || 'Kasir'),
+      table_number: orderType === 'qr_meja' ? tableNumber : 'Takeaway',
+      promo_code: matchedPromo && discountAmount > 0 ? matchedPromo.code : undefined,
       payment_method: paymentMethod,
       items: cart.map((entry) => ({
         menu_item_id: Number(entry.menuItem.id),
@@ -421,13 +449,26 @@ export default function PesananBaruPage() {
                 <label style={{ fontSize: '12px', fontWeight: 700, color: '#555', display: 'block', marginBottom: '4px' }}>
                   No. Meja
                 </label>
-                <input
-                  type="text"
-                  value={tableNumber}
-                  onChange={(e) => setTableNumber(e.target.value)}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #d4c5b9', fontSize: '13px' }}
-                  placeholder="Meja 1"
-                />
+                {orderType === 'qr_meja' ? (
+                  <select
+                    value={tableNumber}
+                    onChange={(e) => setTableNumber(e.target.value)}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #d4c5b9', fontSize: '13px', backgroundColor: '#fff' }}
+                  >
+                    {[...Array(10)].map((_, i) => (
+                      <option key={i + 1} value={`Meja ${i + 1}`}>
+                        Meja {i + 1}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    value="Bawa Pulang / Takeaway"
+                    disabled
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #e0d5c8', fontSize: '13px', backgroundColor: '#f5f0ea', color: '#888' }}
+                  />
+                )}
               </div>
             </div>
 
@@ -542,12 +583,58 @@ export default function PesananBaruPage() {
 
           <hr style={{ border: 'none', borderTop: '1px solid #ebdccb', margin: '16px 0' }} />
 
+          {/* Pilihan Voucher / Kupon Promo */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ fontSize: '12px', fontWeight: 700, color: '#555', display: 'block', marginBottom: '4px' }}>
+              Voucher / Kupon Promo
+            </label>
+            <select
+              value={selectedPromoCode}
+              onChange={(e) => setSelectedPromoCode(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                borderRadius: '8px',
+                border: '1px solid #d4c5b9',
+                fontSize: '13px',
+                backgroundColor: '#fff',
+              }}
+            >
+              <option value="">-- Tanpa Voucher --</option>
+              {promos.map((p) => {
+                const minOrder = Number(p.min_order || 0);
+                const isEligible = subtotal >= minOrder;
+                return (
+                  <option key={p.id} value={p.code} disabled={!isEligible}>
+                    {p.code} - {p.description} {!isEligible ? `(Min. Order Rp ${minOrder.toLocaleString('id-ID')})` : ''}
+                  </option>
+                );
+              })}
+            </select>
+            {matchedPromo && subtotal < Number(matchedPromo.min_order || 0) && (
+              <span style={{ fontSize: '11px', color: '#c0392b', display: 'block', marginTop: '4px' }}>
+                ⚠️ Subtotal belum memenuhi minimal order Rp {Number(matchedPromo.min_order).toLocaleString('id-ID')}
+              </span>
+            )}
+            {discountAmount > 0 && (
+              <span style={{ fontSize: '11px', color: '#27ae60', fontWeight: 700, display: 'block', marginTop: '4px' }}>
+                ✓ Kupon {matchedPromo?.code} aktif (-<RupiahText amount={discountAmount} />)
+              </span>
+            )}
+          </div>
+
           {/* Rincian Total */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px', color: '#666', marginBottom: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span>Subtotal</span>
               <span><RupiahText amount={subtotal} /></span>
             </div>
+            {discountAmount > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: '#27ae60', fontWeight: 700 }}>
+                <span>Diskon Kupon ({matchedPromo?.code})</span>
+                <span>-<RupiahText amount={discountAmount} /></span>
+              </div>
+            )}
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span>Pajak (10%)</span>
               <span><RupiahText amount={taxAmount} /></span>

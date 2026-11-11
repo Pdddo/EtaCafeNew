@@ -49,26 +49,24 @@ export default function ProductsPage({ initialType = "coffee" }: { initialType?:
   }, []);
 
   useEffect(() => {
-    if (selectedCategoryId === "all") {
-      setFilteredItems(menuItems);
-    } else {
-      setFilteredItems(menuItems.filter((item) => item.category_id === Number(selectedCategoryId)));
-    }
-  }, [selectedCategoryId, menuItems]);
+    let result = menuItems;
 
-  useEffect(() => {
-    if (searchQuery.trim()) {
-      setFilteredItems(
-        menuItems.filter((item) =>
-          item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    } else if (selectedCategoryId === "all") {
-      setFilteredItems(menuItems);
-    } else {
-      setFilteredItems(menuItems.filter((item) => item.category_id === Number(selectedCategoryId)));
+    // 1. Filter berdasarkan kategori jika bukan "all"
+    if (selectedCategoryId !== "all") {
+      result = result.filter((item) => item.category_id === Number(selectedCategoryId));
     }
+
+    // 2. Filter berdasarkan kata kunci pencarian (tetap mempertahankan filter kategori yang aktif)
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (item) =>
+          (item.name && item.name.toLowerCase().includes(q)) ||
+          (item.description && item.description.toLowerCase().includes(q))
+      );
+    }
+
+    setFilteredItems(result);
   }, [searchQuery, selectedCategoryId, menuItems]);
 
   const handleAddToCart = (e: React.MouseEvent, item: MenuItemData) => {

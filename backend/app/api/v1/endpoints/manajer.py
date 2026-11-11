@@ -258,12 +258,9 @@ def hapus_pengguna(
                 detail="Tidak dapat menghapus manajer terakhir."
             )
 
-    punya_pesanan = db.query(Order).filter(Order.customer_id == user_id).first()
-    if punya_pesanan:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Pengguna '{user.name}' sudah memiliki riwayat pesanan sehingga tidak dapat dihapus."
-        )
+    # Jika pengguna memiliki riwayat pesanan, lepaskan foreign key customer_id (set ke NULL)
+    # sehingga integritas riwayat pesanan & laporan omset penjualan tetap terjaga (audit trail aman)
+    db.query(Order).filter(Order.customer_id == user_id).update({Order.customer_id: None})
 
     db.delete(user)
     db.commit()

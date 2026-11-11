@@ -12,11 +12,11 @@
 // 5. Hanya React + TypeScript, tanpa HTML/JS terpisah.
 // ============================================================
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart, formatRupiah } from '../../context/CartContext';
-import { PelangganAPI } from '../../api/pelanggan';
+import { PelangganAPI, PromoData } from '../../api/pelanggan';
 import './CartPage.css';
 
 export default function CartPage() {
@@ -29,38 +29,49 @@ export default function CartPage() {
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [discountAmount, setDiscountAmount] = useState(0);
+  const [availablePromos, setAvailablePromos] = useState<PromoData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    PelangganAPI.getPromos()
+      .then((data) => setAvailablePromos(data.filter((p) => p.is_active)))
+      .catch((err) => console.warn('Gagal memuat promo:', err));
+  }, []);
+
   // Perhitungan Biaya
-  const taxAmount = Math.round(subtotal * 0.1); // Pajak 10%
+  // Pajak dihitung dari subtotal SETELAH diskon (konsisten dengan backend)
+  const taxableBase = Math.max(0, subtotal - discountAmount);
+  const taxAmount = Math.round(taxableBase * 0.1); // Pajak 10%
   const serviceFee = subtotal > 0 ? 3000 : 0; // Biaya layanan / kemasan
-  const totalAmount = Math.max(0, subtotal + taxAmount + serviceFee - discountAmount);
+  const totalAmount = Math.max(0, taxableBase + taxAmount + serviceFee);
 
   const handleApplyPromo = (codeToApply?: string) => {
     const code = (codeToApply || promoCode).trim().toUpperCase();
     if (!code) return;
 
-    if (code === 'ETASPESIAL10') {
-      if (subtotal < 40000) {
-        setError('Kupon ETASPESIAL10 membutuhkan minimal order Rp 40.000');
-        return;
-      }
-      const disc = Math.round(subtotal * 0.1);
-      setDiscountAmount(disc);
-      setAppliedPromo(code);
-      setError(null);
-    } else if (code === 'HEMAT5RB') {
-      if (subtotal < 25000) {
-        setError('Kupon HEMAT5RB membutuhkan minimal order Rp 25.000');
-        return;
-      }
-      setDiscountAmount(5000);
-      setAppliedPromo(code);
-      setError(null);
-    } else {
+    const matched = availablePromos.find((p) => p.code.toUpperCase() === code);
+    if (!matched) {
       setError('Kode promo tidak valid atau telah berakhir.');
+      return;
     }
+
+    const minOrder = Number(matched.min_order || 0);
+    if (subtotal < minOrder) {
+      setError(`Kupon ${matched.code} membutuhkan minimal order ${formatRupiah(minOrder)}`);
+      return;
+    }
+
+    let disc = 0;
+    if (matched.discount_type === 'percentage' || matched.discount_type === 'persentase') {
+      disc = Math.round((subtotal * Number(matched.discount_value)) / 100);
+    } else {
+      disc = Math.min(Number(matched.discount_value), subtotal);
+    }
+
+    setDiscountAmount(disc);
+    setAppliedPromo(matched.code);
+    setError(null);
   };
 
   const handleCheckout = async () => {
@@ -76,7 +87,7 @@ export default function CartPage() {
       customer_name: userName,
       customer_phone: '08123456789',
       order_type: orderType,
-      table_number: tableNumber,
+      table_number: orderType === 'qr_meja' ? tableNumber : undefined,
       payment_method: 'qris' as const,
       promo_code: appliedPromo || undefined,
       items: cart.map((i) => ({
@@ -142,11 +153,9 @@ export default function CartPage() {
                     onChange={(e) => setTableNumber(e.target.value)}
                     className="table-select"
                   >
-                    <option value="Meja 1">Meja 1</option>
-                    <option value="Meja 2">Meja 2</option>
-                    <option value="Meja 3">Meja 3</option>
-                    <option value="Meja 4">Meja 4</option>
-                    <option value="Meja 5">Meja 5</option>
+                    {[...Array(10)].map((_, i) => (
+                      <option key={i + 1} value={`Meja ${i + 1}`}>Meja {i + 1}</option>
+                    ))}
                   </select>
                 </div>
               )}
@@ -221,27 +230,24 @@ export default function CartPage() {
                   Gunakan
                 </button>
               </div>
-              <div className="promo-tag-hint">
-                Kupon tersedia:
-                <span
-                  className="promo-chip"
-                  onClick={() => {
-                    setPromoCode('ETASPESIAL10');
-                    handleApplyPromo('ETASPESIAL10');
-                  }}
-                >
-                  ETASPESIAL10
-                </span>
-                <span
-                  className="promo-chip"
-                  onClick={() => {
-                    setPromoCode('HEMAT5RB');
-                    handleApplyPromo('HEMAT5RB');
-                  }}
-                >
-                  HEMAT5RB
-                </span>
-              </div>
+              {availablePromos.length > 0 && (
+                <div className="promo-tag-hint">
+                  Kupon tersedia:
+                  {availablePromos.map((p) => (
+                    <span
+                      key={p.id}
+                      className="promo-chip"
+                      onClick={() => {
+                        setPromoCode(p.code);
+                        handleApplyPromo(p.code);
+                      }}
+                      title={`${p.description} (Min. Order ${formatRupiah(p.min_order)})`}
+                    >
+                      {p.code}
+                    </span>
+                  ))}
+                </div>
+              )}
               {appliedPromo && (
                 <div className="text-xs text-emerald-700 font-semibold mt-2">
                   ✓ Voucher {appliedPromo} berhasil digunakan (-{formatRupiah(discountAmount)})

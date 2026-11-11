@@ -44,6 +44,21 @@ export default function KelolaMenuPage() {
   });
   const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+
+  const handleProcessFile = (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      alert('Mohon pilih file gambar (JPG, PNG, WebP).');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      setFormData((prev) => ({ ...prev, image_url: result }));
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Load Menus & Categories
   const fetchData = async () => {
@@ -509,15 +524,88 @@ export default function KelolaMenuPage() {
               </div>
 
               <div className="manajer-form-group">
-                <label className="manajer-form-label">URL Foto Menu</label>
+                <label className="manajer-form-label">Foto Menu (Upload atau URL)</label>
+                
+                {/* Drag and Drop / Buka File Lokal */}
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDragging(true);
+                  }}
+                  onDragLeave={() => setIsDragging(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDragging(false);
+                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                      handleProcessFile(e.dataTransfer.files[0]);
+                    }
+                  }}
+                  onClick={() => fileInputRef.current?.click()}
+                  style={{
+                    border: `2px dashed ${isDragging ? '#2c1810' : '#d4c5b9'}`,
+                    borderRadius: '10px',
+                    padding: '16px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    backgroundColor: isDragging ? '#faf6f0' : '#fff',
+                    marginBottom: '10px',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        handleProcessFile(e.target.files[0]);
+                      }
+                    }}
+                  />
+                  <div style={{ fontSize: '24px', marginBottom: '4px' }}>📁</div>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: '#2c1810' }}>
+                    Klik untuk pilih foto dari perangkat atau seret (drag &amp; drop) ke sini
+                  </div>
+                  <div style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>
+                    Mendukung format JPG, PNG, WebP
+                  </div>
+                </div>
+
+                {/* Pratinjau Foto */}
+                {formData.image_url && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px', padding: '8px', backgroundColor: '#faf6f0', borderRadius: '8px', border: '1px solid #ebdccb' }}>
+                    <img
+                      src={formData.image_url}
+                      alt="Preview"
+                      style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '8px' }}
+                    />
+                    <div style={{ flex: 1, fontSize: '12px', color: '#555', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      Foto siap digunakan
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setFormData({ ...formData, image_url: '' });
+                      }}
+                      style={{ padding: '4px 8px', fontSize: '11px', color: '#c0392b', background: '#fff', border: '1px solid #c0392b', borderRadius: '6px', cursor: 'pointer' }}
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                )}
+
+                {/* URL gambar opsional */}
                 <input
-                  type="url"
+                  type="text"
                   className="manajer-form-input"
-                  placeholder="https://..."
-                  value={formData.image_url}
+                  placeholder="Atau tempel URL gambar eksternal di sini..."
+                  value={formData.image_url.startsWith('data:') ? '' : formData.image_url}
                   onChange={(e) =>
                     setFormData({ ...formData, image_url: e.target.value })
                   }
+                  style={{ fontSize: '12px' }}
                 />
               </div>
 
