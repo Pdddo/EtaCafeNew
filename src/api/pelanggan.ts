@@ -21,7 +21,7 @@ export interface PromoData {
   id: number;
   code: string;
   description: string;
-  discount_type: 'persentase' | 'nominal';
+  discount_type: 'percentage' | 'fixed' | 'persentase' | 'nominal' | string;
   discount_value: number;
   min_order: number;
   is_active: boolean;

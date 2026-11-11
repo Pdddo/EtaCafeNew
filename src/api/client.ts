@@ -41,7 +41,13 @@ export async function request<T>(endpoint: string, options?: RequestInit): Promi
     throw new Error(errorData.detail || `Request failed with status ${response.status}`);
   }
 
-  return (await response.json()) as T;
+  // Jika response 204 (No Content) atau body kosong, tidak perlu parse JSON
+  if (response.status === 204) {
+    return null as unknown as T;
+  }
+
+  const text = await response.text();
+  return (text ? JSON.parse(text) : null) as T;
 }
 
 // ================= API ENDPOINTS: ROLE PELANGGAN =================
