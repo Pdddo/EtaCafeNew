@@ -36,9 +36,18 @@ from app.schemas.schemas import (
     UserOut,
     SalesReportSummary,
     TableCreate,
+    TableUpdate,
+    TableReorder,
     TableOut,
 )
-from app.core.tables_manager import get_all_tables, add_new_table, remove_table
+from app.core.tables_manager import (
+    get_all_tables,
+    add_new_table,
+    update_table,
+    toggle_table_status,
+    reorder_tables,
+    remove_table,
+)
 from app.core.security import get_password_hash
 from app.core.deps import require_role
 
@@ -425,13 +434,28 @@ def ekspor_laporan_penjualan_csv(db: Session = Depends(get_db)):
 # ================= 6. MANAJEMEN MEJA (FILE-BASED, ZERO DATABASE MIGRATION) =================
 @router.get("/tables", response_model=List[TableOut])
 def daftar_meja_manajer():
-    """Manajer melihat daftar seluruh meja."""
+    """Manajer melihat daftar seluruh meja (baik yang aktif maupun maintenance)."""
     return get_all_tables()
 
 @router.post("/tables", response_model=TableOut, status_code=status.HTTP_201_CREATED)
 def tambah_meja_baru(payload: TableCreate):
     """Manajer menambah meja baru."""
-    return add_new_table(payload.name)
+    return add_new_table(payload.name, is_active=payload.is_active)
+
+@router.put("/tables/{table_id}", response_model=TableOut)
+def ubah_data_meja(table_id: int, payload: TableUpdate):
+    """Manajer mengubah data meja (nama dan status ketersediaan/maintenance)."""
+    return update_table(table_id, name=payload.name, is_active=payload.is_active)
+
+@router.patch("/tables/{table_id}/toggle", response_model=TableOut)
+def toggle_status_ketersediaan_meja(table_id: int):
+    """Manajer mengaktifkan atau menonaktifkan status ketersediaan meja (misal pemeliharaan/maintenance)."""
+    return toggle_table_status(table_id)
+
+@router.post("/tables/reorder", response_model=List[TableOut])
+def urutkan_daftar_meja(payload: TableReorder):
+    """Manajer mengubah susunan urutan meja secara drag and drop."""
+    return reorder_tables(payload.table_ids)
 
 @router.delete("/tables/{table_id}", status_code=status.HTTP_204_NO_CONTENT)
 def hapus_meja_kafe(table_id: int):

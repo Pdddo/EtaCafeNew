@@ -1,46 +1,52 @@
 [
   {
     "id": 1,
-    "name": "Meja 1"
+    "name": "Meja 1",
+    "is_active": true
   },
   {
     "id": 2,
-    "name": "Meja 2"
+    "name": "Meja 2",
+    "is_active": true
   },
   {
     "id": 3,
-    "name": "Meja 3"
+    "name": "Meja 3",
+    "is_active": true
   },
   {
     "id": 4,
-    "name": "Meja 4"
+    "name": "Meja 4",
+    "is_active": true
   },
   {
     "id": 5,
-    "name": "Meja 5"
+    "name": "Meja 5",
+    "is_active": true
   },
   {
     "id": 6,
-    "name": "Meja 6"
+    "name": "Meja 6",
+    "is_active": true
   },
   {
     "id": 7,
-    "name": "Meja 7"
+    "name": "Meja 7",
+    "is_active": true
   },
   {
     "id": 8,
-    "name": "Meja 8"
+    "name": "Meja 8",
+    "is_active": false
   },
   {
     "id": 9,
-    "name": "Meja 9"
+    "name": "Meja 9",
+    "is_active": true
   },
   {
     "id": 10,
-    "name": "Meja 10"
-  },
-  {
-    "id": 11,
-    "name": "Meja VIP 1"
+    "name": "Meja 10",
+    "is_active": true
   }
 ]

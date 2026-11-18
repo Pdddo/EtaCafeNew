@@ -45,8 +45,9 @@ export interface ManajerPromo {
 }
 
 export interface ManajerTable {
-  id: number | string;
+  id: number;
   name: string;
+  is_active: boolean;
 }
 
 export interface SalesReportSummary {
@@ -251,10 +252,33 @@ export async function getTables(): Promise<ManajerTable[]> {
   return request<ManajerTable[]>('/manajer/tables');
 }
 
-export async function createTable(payload: { name: string }): Promise<ManajerTable> {
+export async function createTable(payload: { name: string; is_active?: boolean }): Promise<ManajerTable> {
   return request<ManajerTable>('/manajer/tables', {
     method: 'POST',
     body: JSON.stringify(payload),
+  });
+}
+
+export async function updateTable(
+  tableId: number | string,
+  payload: { name?: string; is_active?: boolean }
+): Promise<ManajerTable> {
+  return request<ManajerTable>(`/manajer/tables/${tableId}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function toggleTableStatus(tableId: number | string): Promise<ManajerTable> {
+  return request<ManajerTable>(`/manajer/tables/${tableId}/toggle`, {
+    method: 'PATCH',
+  });
+}
+
+export async function reorderTables(tableIds: (number | string)[]): Promise<ManajerTable[]> {
+  return request<ManajerTable[]>('/manajer/tables/reorder', {
+    method: 'POST',
+    body: JSON.stringify({ table_ids: tableIds }),
   });
 }
 
@@ -284,6 +308,9 @@ export const ManajerAPI = {
   deletePromo,
   getTables,
   createTable,
+  updateTable,
+  toggleTableStatus,
+  reorderTables,
   deleteTable,
   getSalesSummary,
   downloadSalesCsv,

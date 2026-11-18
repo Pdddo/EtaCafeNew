@@ -40,6 +40,7 @@ import KasirPesananBaruPage from '../pages/kasir/PesananBaruPage';
 import KasirPembayaranPage from '../pages/kasir/PembayaranPage';
 
 // ===================== DAPUR PAGES =====================
+import DapurDashboardPage from '../pages/dapur/DashboardPage';
 import DapurAntrianPage from '../pages/dapur/AntrianPage';
 import DapurAntrianPesananPage from '../pages/dapur/AntrianPesananPage';
 import DapurDetailPesananPage from '../pages/dapur/DetailPesananPage';
@@ -120,7 +121,7 @@ export default function AppRouter() {
       case 'kasir':
         return '/kasir/dashboard';
       case 'dapur':
-        return '/dapur/antrian';
+        return '/dapur/dashboard';
       case 'manajer':
         return '/manajer/dashboard';
       default:
@@ -209,6 +210,8 @@ export default function AppRouter() {
             </ProtectedRoute>
           }
         >
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<DapurDashboardPage />} />
           <Route path="antrian" element={<DapurAntrianPage />} />
           <Route path="antrian-pesanan" element={<DapurAntrianPesananPage />} />
           <Route path="detail/:id" element={<DapurDetailPesananPage />} />

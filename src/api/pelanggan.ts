@@ -30,6 +30,7 @@ export interface PromoData {
 export interface TableData {
   id: number;
   name: string;
+  is_active?: boolean;
 }
 
 export interface OrderItemPayload {
@@ -51,7 +52,8 @@ export interface OrderCreatePayload {
 export const PelangganAPI = {
   getCategories: () => request<CategoryData[]>('/pelanggan/categories'),
   getPromos: () => request<PromoData[]>('/pelanggan/promos'),
-  getTables: () => request<TableData[]>('/pelanggan/tables'),
+  getTables: (onlyActive: boolean = true) =>
+    request<TableData[]>(`/pelanggan/tables?only_active=${onlyActive}`),
   getMenu: (kategoriId?: number, search?: string) => {
     const query = new URLSearchParams();
     if (kategoriId) query.append('kategori_id', String(kategoriId));

@@ -39,7 +39,7 @@ export default function CartPage() {
       .then((data) => setAvailablePromos(data.filter((p) => p.is_active)))
       .catch((err) => console.warn('Gagal memuat promo:', err));
 
-    PelangganAPI.getTables()
+    PelangganAPI.getTables(true)
       .then((tables) => {
         if (tables && tables.length > 0) {
           setAvailableTables(tables);
@@ -49,11 +49,11 @@ export default function CartPage() {
       .catch((err) => console.warn('Gagal memuat meja:', err));
   }, []);
 
-  // Perhitungan Biaya
-  // Pajak dihitung dari subtotal SETELAH diskon (konsisten dengan backend)
+  // Perhitungan Biaya (BR-05 & FR-14)
+  // Pajak (10%) & Biaya Layanan (5%) dihitung dari subtotal SETELAH diskon (konsisten dengan backend)
   const taxableBase = Math.max(0, subtotal - discountAmount);
   const taxAmount = Math.round(taxableBase * 0.1); // Pajak 10%
-  const serviceFee = subtotal > 0 ? 3000 : 0; // Biaya layanan / kemasan
+  const serviceFee = taxableBase > 0 ? Math.round(taxableBase * 0.05) : 0; // Biaya Layanan 5%
   const totalAmount = Math.max(0, taxableBase + taxAmount + serviceFee);
 
   const handleApplyPromo = (codeToApply?: string) => {
@@ -95,7 +95,7 @@ export default function CartPage() {
 
     const payload = {
       customer_name: userName,
-      customer_phone: '08123456789',
+      customer_phone: user?.emailOrPhone || (user as any)?.email_or_phone || '08123456789',
       order_type: orderType,
       table_number: orderType === 'qr_meja' ? tableNumber : undefined,
       payment_method: 'qris' as const,

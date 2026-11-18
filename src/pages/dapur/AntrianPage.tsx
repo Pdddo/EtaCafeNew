@@ -96,76 +96,6 @@ function normalizeOrder(o: any): Order {
   };
 }
 
-// ---- Data Mock Realistis Awal ----
-const INITIAL_MOCK_ORDERS: Order[] = [
-  {
-    id: '101',
-    orderNumber: 'ORD-2026-001',
-    customerName: 'Ahmad Faisal',
-    orderType: 'qr_meja',
-    tableNumber: '2',
-    items: [
-      { id: '1', menuItemId: '1', menuItemName: 'Iced Coffee Sweet Heaven', price: 24000, quantity: 1, subtotal: 24000, notes: 'Sedotan kertas' },
-      { id: '2', menuItemId: '2', menuItemName: 'Iced Coffee Americano', price: 25000, quantity: 1, subtotal: 25000, notes: 'Less sugar' },
-    ],
-    subtotal: 49000,
-    discountAmount: 0,
-    taxAmount: 4900,
-    serviceFee: 2450,
-    totalAmount: 49000,
-    paymentMethod: 'QRIS',
-    paymentStatus: 'Berhasil',
-    status: 'Dikonfirmasi',
-    createdAt: new Date().toISOString(),
-    confirmedAt: new Date().toISOString(),
-  },
-  {
-    id: '102',
-    orderNumber: 'ORD-2026-002',
-    customerName: 'Nurhaliza',
-    orderType: 'qr_meja',
-    tableNumber: '4',
-    items: [
-      { id: '3', menuItemId: '1', menuItemName: 'Iced Coffee Sweet Heaven', price: 24000, quantity: 1, subtotal: 24000, notes: '' },
-      { id: '4', menuItemId: '2', menuItemName: 'Iced Coffee Americano', price: 25000, quantity: 1, subtotal: 25000, notes: 'Extra ice' },
-    ],
-    subtotal: 49000,
-    discountAmount: 0,
-    taxAmount: 4900,
-    serviceFee: 2450,
-    totalAmount: 49000,
-    paymentMethod: 'Tunai',
-    paymentStatus: 'Berhasil',
-    status: 'Sedang Diproses',
-    createdAt: new Date(Date.now() - 15 * 60000).toISOString(),
-    confirmedAt: new Date(Date.now() - 12 * 60000).toISOString(),
-    processingAt: new Date(Date.now() - 5 * 60000).toISOString(),
-  },
-  {
-    id: '103',
-    orderNumber: 'ORD-2026-003',
-    customerName: 'Dimas Pratama',
-    orderType: 'qr_meja',
-    tableNumber: '5',
-    items: [
-      { id: '5', menuItemId: '1', menuItemName: 'Iced Coffee Sweet Heaven', price: 24000, quantity: 1, subtotal: 24000, notes: '' },
-      { id: '6', menuItemId: '2', menuItemName: 'Iced Coffee Americano', price: 25000, quantity: 1, subtotal: 25000, notes: '' },
-    ],
-    subtotal: 49000,
-    discountAmount: 0,
-    taxAmount: 4900,
-    serviceFee: 2450,
-    totalAmount: 49000,
-    paymentMethod: 'Kartu Debit',
-    paymentStatus: 'Berhasil',
-    status: 'Selesai',
-    createdAt: new Date(Date.now() - 30 * 60000).toISOString(),
-    confirmedAt: new Date(Date.now() - 25 * 60000).toISOString(),
-    processingAt: new Date(Date.now() - 20 * 60000).toISOString(),
-    completedAt: new Date().toISOString(), // Selesai hari ini
-  },
-];
-
 export default function AntrianPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -174,25 +104,8 @@ export default function AntrianPage() {
   // Tab aktif: 'dikonfirmasi' | 'proses' | 'selesai'
   const [activeTab, setActiveTab] = useState<DapurTab>('dikonfirmasi');
 
-  // State Semua Pesanan
-  const [orders, setOrders] = useState<Order[]>(() => {
-    // Muat pesanan tersimpan di localStorage (jika ada)
-    try {
-      const saved = localStorage.getItem(COMPLETED_STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const map = new Map<string, Order>();
-          INITIAL_MOCK_ORDERS.forEach((o) => map.set(String(o.id), normalizeOrder(o)));
-          parsed.forEach((o) => map.set(String(o.id), normalizeOrder(o)));
-          return Array.from(map.values());
-        }
-      }
-    } catch {
-      // Abaikan
-    }
-    return INITIAL_MOCK_ORDERS.map(normalizeOrder);
-  });
+  // State Semua Pesanan (Real Data dari Backend)
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [filterDate, setFilterDate] = useState<string>(getTodayString());
@@ -215,56 +128,36 @@ export default function AntrianPage() {
     }
   }, [location.pathname]);
 
-  // Simpan Pesanan Selesai ke LocalStorage agar tidak hilang
-  const persistCompletedOrders = useCallback((allOrders: Order[]) => {
-    try {
-      const completedOnly = allOrders.filter((o) =>
-        (o.status || '').toLowerCase().includes('selesai')
-      );
-      localStorage.setItem(COMPLETED_STORAGE_KEY, JSON.stringify(completedOnly));
-    } catch {
-      // Abaikan
-    }
-  }, []);
-
-  // ---- Fetch Pesanan dari Backend ----
+  // ---- Fetch Pesanan Real dari Backend ----
   const fetchOrders = useCallback(async () => {
     try {
+      setLoading(true);
       const [queueData, completedData] = await Promise.allSettled([
         DapurAPI.getKitchenQueue(),
         DapurAPI.getCompletedOrdersToday(filterDate),
       ]);
 
-      const queueList = queueData.status === 'fulfilled' && Array.isArray(queueData.value)
-        ? queueData.value.map(normalizeOrder)
-        : [];
+      const queueList =
+        queueData.status === 'fulfilled' && Array.isArray(queueData.value)
+          ? queueData.value.map(normalizeOrder)
+          : [];
 
-      const completedList = completedData.status === 'fulfilled' && Array.isArray(completedData.value)
-        ? completedData.value.map(normalizeOrder)
-        : [];
+      const completedList =
+        completedData.status === 'fulfilled' && Array.isArray(completedData.value)
+          ? completedData.value.map(normalizeOrder)
+          : [];
 
-      if (queueList.length > 0 || completedList.length > 0) {
-        setOrders((prev) => {
-          const orderMap = new Map<string, Order>();
+      const orderMap = new Map<string, Order>();
+      queueList.forEach((o) => orderMap.set(String(o.id), o));
+      completedList.forEach((o) => orderMap.set(String(o.id), o));
 
-          // Masukkan data sebelumnya yang sudah tersimpan
-          prev.forEach((o) => orderMap.set(String(o.id), o));
-
-          // Timpa dengan data terbaru dari backend
-          queueList.forEach((o) => orderMap.set(String(o.id), o));
-          completedList.forEach((o) => orderMap.set(String(o.id), o));
-
-          const merged = Array.from(orderMap.values());
-          persistCompletedOrders(merged);
-          return merged;
-        });
-      }
+      setOrders(Array.from(orderMap.values()));
     } catch (err) {
-      console.warn('[Dapur] Menggunakan data lokal (backend offline / data sinkron)');
+      console.error('[Dapur] Gagal memuat pesanan:', err);
     } finally {
       setLoading(false);
     }
-  }, [filterDate, persistCompletedOrders]);
+  }, [filterDate]);
 
   // Polling berkala setiap 7 detik
   useEffect(() => {
@@ -273,7 +166,7 @@ export default function AntrianPage() {
     return () => clearInterval(interval);
   }, [fetchOrders]);
 
-  // ---- Filter Pesanan Berdasarkan Tab Aktif & Tanggal ----
+  // ---- Filter Pesanan Berdasarkan Tab Aktif & Tanggal Selesai ----
   const filteredOrders = useMemo(() => {
     if (activeTab === 'dikonfirmasi') {
       return orders.filter((o) => {
@@ -294,14 +187,12 @@ export default function AntrianPage() {
         const s = (o.status || '').toLowerCase();
         if (!s.includes('selesai')) return false;
 
-        // Jika filterDate ada (misal "2026-11-05"), cocokkan tanggal lokal
         if (filterDate) {
           const orderDate = getLocalDateString(
             (o as any).completed_at || o.completedAt || (o as any).created_at || o.createdAt
           );
           return orderDate === filterDate;
         }
-        // Jika filterDate kosong, tampilkan semua pesanan selesai
         return true;
       });
     }
@@ -313,53 +204,24 @@ export default function AntrianPage() {
   const handleStartProcessing = async (order: Order) => {
     try {
       await DapurAPI.startProcessing(order.id);
-    } catch {
-      console.warn('[Dapur] startProcessing backend fallback to client-state');
+      showToast(`Pesanan #${order.orderNumber} (Meja ${order.tableNumber || '-'}) mulai diproses!`);
+      setActiveTab('proses');
+      await fetchOrders();
+    } catch (err: any) {
+      alert(`Gagal memproses pesanan: ${err?.message || 'Terjadi kesalahan'}`);
     }
-
-    const updated = orders.map((o) =>
-      String(o.id) === String(order.id)
-        ? {
-            ...o,
-            status: 'Sedang Diproses',
-            processingAt: new Date().toISOString(),
-          }
-        : o
-    );
-    setOrders(updated);
-    persistCompletedOrders(updated);
-
-    showToast(`Pesanan #${order.orderNumber} (Meja ${order.tableNumber || '-'}) mulai diproses!`);
-    setActiveTab('proses');
   };
 
   // ---- Handler: Selesaikan Pesanan (Proses -> Selesai) ----
   const handleCompleteOrder = async (order: Order) => {
     try {
       await DapurAPI.completeOrder(order.id);
-    } catch {
-      console.warn('[Dapur] completeOrder backend fallback to client-state');
+      showToast(`Pesanan #${order.orderNumber} (Meja ${order.tableNumber || '-'}) telah SELESAI siap disajikan!`);
+      setActiveTab('selesai');
+      await fetchOrders();
+    } catch (err: any) {
+      alert(`Gagal menyelesaikan pesanan: ${err?.message || 'Terjadi kesalahan'}`);
     }
-
-    const nowIso = new Date().toISOString();
-    const updated = orders.map((o) =>
-      String(o.id) === String(order.id)
-        ? {
-            ...o,
-            status: 'Selesai',
-            completedAt: nowIso,
-            completed_at: nowIso,
-          }
-        : o
-    );
-    setOrders(updated);
-    persistCompletedOrders(updated);
-
-    // Pastikan filterDate diset ke tanggal hari ini agar pesanan yang baru selesai langsung terlihat
-    setFilterDate(getTodayString());
-
-    showToast(`Pesanan #${order.orderNumber} (Meja ${order.tableNumber || '-'}) telah SELESAI siap disajikan!`);
-    setActiveTab('selesai');
   };
 
   // ---- Handler Logout ----
@@ -368,29 +230,82 @@ export default function AntrianPage() {
     navigate('/login', { replace: true });
   };
 
-  // ---- Title Top Bar Dinamis (Sesuai 3 Gambar Figma) ----
-  const getTopStatusTitle = () => {
-    if (activeTab === 'dikonfirmasi') return 'Dikonfirmasi Kasir';
-    if (activeTab === 'proses') return 'Proses';
-    return 'Selesai';
-  };
+  // ---- Hitung Jumlah Antrean Tiap Tab ----
+  const dikonfirmasiCount = useMemo(
+    () => orders.filter((o) => o.status === 'Dikonfirmasi').length,
+    [orders]
+  );
+  const prosesCount = useMemo(
+    () =>
+      orders.filter(
+        (o) => o.status === 'Sedang Diproses' || o.status === 'Diproses'
+      ).length,
+    [orders]
+  );
+  const selesaiCount = useMemo(
+    () => orders.filter((o) => o.status === 'Selesai').length,
+    [orders]
+  );
 
   return (
-    <div className="dapur-page-wrapper">
-      {/* 1. STATUS BAR ATAS (Sesuai Figma: "Dikonfirmasi Kasir" / "Proses" / "Selesai") */}
-      <div className="dapur-top-status-bar">
-        <span className="dapur-top-status-title">{getTopStatusTitle()}</span>
-        <div className="dapur-top-status-right">
-          <span>Real-time Kitchen Display</span>
-          <button className="dapur-refresh-badge" onClick={fetchOrders} title="Perbarui Pesanan">
-            🔄 Refresh
+    <div style={{ paddingBottom: '40px' }}>
+      {/* 1. HEADER HALAMAN (Selaras dengan Kasir & Manajer) */}
+      <div className="dapur-page-header">
+        <div>
+          <h1 className="dapur-page-title">Antrean Pesanan Dapur (KDS)</h1>
+          <p className="dapur-page-subtitle">
+            Kitchen Display System • Kelola antrean pesanan masuk, proses hidangan, dan sajian
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            className="dapur-btn dapur-btn-secondary"
+            onClick={fetchOrders}
+            title="Perbarui Pesanan"
+          >
+            🔄 Refresh Antrean
+          </button>
+          <button
+            type="button"
+            className="dapur-btn dapur-btn-primary"
+            onClick={() => navigate('/dapur/dashboard')}
+          >
+            📊 Kembali ke Dashboard
           </button>
         </div>
       </div>
 
+      {/* 2. SUBNAV / TABS STATUS UTAMA (Konsisten dengan Kasir & Manajer) */}
+      <div className="dapur-subnav">
+        <button
+          type="button"
+          className={`dapur-subnav-pill ${activeTab === 'dikonfirmasi' ? 'active' : ''}`}
+          onClick={() => setActiveTab('dikonfirmasi')}
+        >
+          🛎️ Siap Dimasak <span className="badge">{dikonfirmasiCount}</span>
+        </button>
+
+        <button
+          type="button"
+          className={`dapur-subnav-pill ${activeTab === 'proses' ? 'active' : ''}`}
+          onClick={() => setActiveTab('proses')}
+        >
+          🍳 Sedang Diproses <span className="badge">{prosesCount}</span>
+        </button>
+
+        <button
+          type="button"
+          className={`dapur-subnav-pill ${activeTab === 'selesai' ? 'active' : ''}`}
+          onClick={() => setActiveTab('selesai')}
+        >
+          ✅ Selesai Disajikan <span className="badge">{selesaiCount}</span>
+        </button>
+      </div>
+
       {/* 3. FILTER TANGGAL (Hanya Tampil di Tab "Selesai") */}
       {activeTab === 'selesai' && (
-        <div className="dapur-date-filter-bar">
+        <div className="dapur-date-filter-bar" style={{ marginBottom: '20px' }}>
           <div className="dapur-date-filter-label">
             📅 Riwayat Pesanan Selesai:
             {filterDate ? (
@@ -416,7 +331,8 @@ export default function AntrianPage() {
               className="dapur-date-btn-today"
               onClick={() => setFilterDate(getTodayString())}
               style={{
-                backgroundColor: filterDate === getTodayString() ? '#7b4a1e' : '#a07855',
+                backgroundColor: filterDate === getTodayString() ? '#844c1c' : '#ebdccb',
+                color: filterDate === getTodayString() ? '#ffffff' : '#2c1810',
               }}
             >
               Hari Ini
@@ -426,7 +342,8 @@ export default function AntrianPage() {
               className="dapur-date-btn-today"
               onClick={() => setFilterDate('')}
               style={{
-                backgroundColor: filterDate === '' ? '#7b4a1e' : '#8c7d73',
+                backgroundColor: filterDate === '' ? '#844c1c' : '#ebdccb',
+                color: filterDate === '' ? '#ffffff' : '#2c1810',
               }}
             >
               Semua Tanggal
@@ -602,46 +519,7 @@ export default function AntrianPage() {
         })}
       </main>
 
-      {/* 5. FOOTER COKELAT GELAP DENGAN TAB FIGMA (Dikonfirmasi | Proses | Selesai) */}
-      <footer className="dapur-footer-navbar">
-        <div className="dapur-footer-top">
-          <div className="dapur-footer-brand-box">
-            <span className="dapur-footer-brand-logo">Coffee Shop</span>
-            <span className="dapur-footer-brand-tagline">one Stop | one Heart | one Cup</span>
-          </div>
 
-          {/* Tiga Tombol Pill Navigasi Utama Figma */}
-          <div className="dapur-footer-tabs">
-            <button
-              type="button"
-              className={`dapur-footer-tab-pill ${activeTab === 'dikonfirmasi' ? 'active' : ''}`}
-              onClick={() => setActiveTab('dikonfirmasi')}
-            >
-              Dikonfirmasi
-            </button>
-
-            <button
-              type="button"
-              className={`dapur-footer-tab-pill ${activeTab === 'proses' ? 'active' : ''}`}
-              onClick={() => setActiveTab('proses')}
-            >
-              Proses
-            </button>
-
-            <button
-              type="button"
-              className={`dapur-footer-tab-pill ${activeTab === 'selesai' ? 'active' : ''}`}
-              onClick={() => setActiveTab('selesai')}
-            >
-              Selesai
-            </button>
-          </div>
-        </div>
-
-        <div className="dapur-footer-copyright">
-          © 2023 All Rights Reserved
-        </div>
-      </footer>
 
       {/* 6. MODAL STRUK PESANAN (POPUP LIHAT STRUK) */}
       {receiptOrder && (

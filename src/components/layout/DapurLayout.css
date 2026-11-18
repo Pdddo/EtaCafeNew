@@ -1,4 +1,6 @@
-/* DapurLayout.css - Kitchen Display System Layout */
+/* DapurLayout.css - EtaCafe Kitchen Layout (Selaras dengan Kasir & Manajer) */
+
+/* ═══════════════════ WRAPPER & CONTAINER ═══════════════════ */
 .dapur-wrapper {
   display: flex;
   flex-direction: column;
@@ -13,102 +15,206 @@
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 32px 24px 100px;
+  padding: 32px 24px 60px;
 }
 
-.dapur-footer-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #2c1810;
-  padding: 16px 24px;
+/* ═══════════════════ PAGE HEADER & TYPOGRAPHY ═══════════════════ */
+.dapur-page-header {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  box-shadow: 0 -4px 16px rgba(44, 24, 16, 0.3);
-  z-index: 90;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-.dapur-footer-pill {
-  padding: 12px 28px;
-  border-radius: 9999px;
+.dapur-page-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #2c1810;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+}
+
+.dapur-page-subtitle {
   font-size: 14px;
-  font-weight: 600;
-  background-color: #e6dfd8;
-  color: #524741;
-  border: none;
+  color: #665c54;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ═══════════════════ TOMBOL & BADGE DAPUR ═══════════════════ */
+.dapur-btn {
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.dapur-footer-pill:hover {
-  background-color: #dbd2c8;
+  border: 1.5px solid #2c1810;
+  background-color: transparent;
   color: #2c1810;
-  transform: translateY(-2px);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
 }
 
-.dapur-footer-pill.active {
-  background-color: #8c7d73;
+.dapur-btn:hover {
+  background-color: #2c1810;
   color: #ffffff;
 }
 
-/* DapurLayout.css - Kitchen Display System Layout */
-.dapur-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #fdf8ee;
-  color: #2c1810;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+.dapur-btn-primary {
+  background-color: #2c1810;
+  color: #ffffff;
+  border-color: #2c1810;
 }
 
-.dapur-container {
+.dapur-btn-primary:hover {
+  background-color: #1a0f0a;
+}
+
+.dapur-btn-secondary {
+  background-color: #ffffff;
+  color: #2c1810;
+  border-color: #ebdccb;
+}
+
+.dapur-btn-secondary:hover {
+  background-color: #f5efe6;
+}
+
+.dapur-btn-accent {
+  background-color: #844c1c;
+  color: #ffffff;
+  border-color: #844c1c;
+}
+
+.dapur-btn-accent:hover {
+  background-color: #6a3d16;
+}
+
+.dapur-btn-success {
+  background-color: #166534;
+  color: #ffffff;
+  border-color: #166534;
+}
+
+.dapur-btn-success:hover {
+  background-color: #14532d;
+}
+
+/* ═══════════════════ STATISTIC CARDS ═══════════════════ */
+.dapur-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.dapur-stat-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 20px 22px;
+  border: 1px solid #ebdccb;
+  box-shadow: 0 2px 10px rgba(44, 24, 16, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dapur-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(44, 24, 16, 0.08);
+}
+
+.dapur-stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.dapur-stat-info {
   flex: 1;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 32px 24px 100px;
 }
 
-.dapur-footer-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #2c1810;
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  box-shadow: 0 -4px 16px rgba(44, 24, 16, 0.3);
-  z-index: 90;
+.dapur-stat-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #8c7d70;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
 }
 
-.dapur-footer-pill {
-  padding: 12px 28px;
-  border-radius: 9999px;
-  font-size: 14px;
-  font-weight: 600;
-  background-color: #e6dfd8;
-  color: #524741;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.dapur-footer-pill:hover {
-  background-color: #dbd2c8;
+.dapur-stat-value {
+  font-size: 26px;
+  font-weight: 800;
   color: #2c1810;
-  transform: translateY(-2px);
+  line-height: 1.1;
 }
 
-.dapur-footer-pill.active {
-  background-color: #8c7d73;
+.dapur-stat-desc {
+  font-size: 12px;
+  color: #665c54;
+  margin-top: 4px;
+}
+
+/* ═══════════════════ TOP SUBNAV / TABS (Konsisten dengan Manajer & Kasir) ═══════════════════ */
+.dapur-subnav {
+  display: flex;
+  gap: 8px;
+  background-color: #f5efe6;
+  padding: 6px;
+  border-radius: 9999px;
+  margin-bottom: 24px;
+  width: fit-content;
+  flex-wrap: wrap;
+  border: 1px solid #ebdccb;
+}
+
+.dapur-subnav-pill {
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #665c54;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dapur-subnav-pill:hover {
+  color: #2c1810;
+  background-color: rgba(44, 24, 16, 0.05);
+}
+
+.dapur-subnav-pill.active {
+  background-color: #2c1810;
   color: #ffffff;
 }
 
+.dapur-subnav-pill .badge {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: inherit;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.dapur-subnav-pill:not(.active) .badge {
+  background-color: #e6ded5;
+  color: #2c1810;
+}

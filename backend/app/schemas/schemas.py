@@ -90,10 +90,19 @@ class PromoOut(PromoBase):
 # ================= MEJA / TABLES (FILE-BASED) =================
 class TableCreate(BaseModel):
     name: str
+    is_active: bool = True
+
+class TableUpdate(BaseModel):
+    name: Optional[str] = None
+    is_active: Optional[bool] = None
+
+class TableReorder(BaseModel):
+    table_ids: List[int]
 
 class TableOut(BaseModel):
     id: int
     name: str
+    is_active: bool = True
 
 # ================= ORDER =================
 class OrderItemCreate(BaseModel):

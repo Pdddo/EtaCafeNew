@@ -80,6 +80,10 @@ export async function createOrder(orderPayload: any): Promise<Order> {
   });
 }
 
+export async function getTables(onlyActive: boolean = true): Promise<any[]> {
+  return request<any[]>(`/pelanggan/tables?only_active=${onlyActive}`);
+}
+
 export const KasirAPI = {
   getPendingOrders,
   getOrders,
@@ -89,6 +93,7 @@ export const KasirAPI = {
   getCategories,
   getPromos,
   getMenu,
+  getTables,
   createOrder,
 };
 

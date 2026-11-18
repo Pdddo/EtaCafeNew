@@ -1,133 +1,26 @@
 /* ============================================================
    AntrianPage.css — Kitchen Display System (Role Dapur)
-   Desain 100% Presisi Berdasarkan Figma (Dikonfirmasi, Proses, Selesai)
+   Penyelarasan Tampilan dengan Desain Elegan EtaCafe
    ============================================================ */
-
-/* Container Utama Halaman Dapur */
-.dapur-page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #ffffff;
-  color: #2c1810;
-  font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-/* 1. Bar Status Paling Atas (di atas Navbar sesuai Figma) */
-.dapur-top-status-bar {
-  background-color: #111111;
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 500;
-  padding: 8px 24px;
-  letter-spacing: 0.3px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dapur-top-status-title {
-  font-size: 15px;
-  color: #cccccc;
-}
-
-.dapur-top-status-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 13px;
-  color: #aaaaaa;
-}
-
-.dapur-refresh-badge {
-  background: rgba(255, 255, 255, 0.12);
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  color: #eee;
-  cursor: pointer;
-  border: none;
-  transition: background 0.2s;
-}
-
-.dapur-refresh-badge:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-/* 2. Header / Navbar Cokelat Gelap (Figma: "Coffee Shop" | "Products" "Checkout") */
-.dapur-header-navbar {
-  background-color: #2c1810;
-  padding: 14px 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.dapur-header-brand {
-  font-family: 'Dancing Script', cursive;
-  font-size: 28px;
-  font-weight: 700;
-  color: #ffffff;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.dapur-header-links {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.dapur-header-link {
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 500;
-  text-decoration: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  transition: opacity 0.2s;
-}
-
-.dapur-header-link:hover {
-  opacity: 0.8;
-}
-
-.dapur-header-logout {
-  color: #e09f80;
-  font-size: 14px;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(224, 159, 128, 0.4);
-  border-radius: 16px;
-  padding: 5px 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.dapur-header-logout:hover {
-  background: #e09f80;
-  color: #2c1810;
-}
 
 /* 3. Filter Tanggal di Tab Selesai */
 .dapur-date-filter-bar {
-  background-color: #f8f6f2;
-  border-bottom: 1px solid #e8e2d8;
-  padding: 12px 28px;
+  background-color: #ffffff;
+  border: 1px solid #ebdccb;
+  border-radius: 14px;
+  padding: 12px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
+  box-shadow: 0 2px 8px rgba(44, 24, 16, 0.03);
 }
 
 .dapur-date-filter-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #5c4a3e;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2c1810;
 }
 
 .dapur-date-filter-controls {
@@ -138,42 +31,35 @@
 
 .dapur-date-input {
   padding: 6px 12px;
-  border: 1.5px solid #d4c7b8;
+  border: 1px solid #ebdccb;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   font-family: inherit;
   color: #2c1810;
-  background: #ffffff;
+  background: #faf7f2;
   outline: none;
 }
 
 .dapur-date-input:focus {
-  border-color: #7b4a1e;
+  border-color: #844c1c;
 }
 
 .dapur-date-btn-today {
   padding: 6px 14px;
-  background-color: #7b4a1e;
-  color: #ffffff;
   border: none;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
-}
-
-.dapur-date-btn-today:hover {
-  background-color: #5a3414;
+  transition: all 0.2s;
 }
 
 /* 4. Area Konten Utama */
 .dapur-main-content {
   flex: 1;
-  max-width: 900px;
   width: 100%;
   margin: 0 auto;
-  padding: 36px 20px 140px; /* Space bawah untuk footer tetap */
+  padding: 0;
 }
 
 /* Pesan Toast / Alert Notifikasi Perubahan Status */
@@ -181,13 +67,15 @@
   background-color: #2c1810;
   color: #ffffff;
   padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(44, 24, 16, 0.15);
   animation: slideDown 0.3s ease-out;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 @keyframes slideDown {
@@ -201,28 +89,28 @@
   }
 }
 
-/* 5. Kartu Pesanan Sesuai Figma */
+/* 5. Kartu Pesanan Sesuai Desain EtaCafe */
 .dapur-card {
   display: flex;
   background-color: #ffffff;
   border-radius: 20px;
-  margin-bottom: 32px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  border: 1.5px solid #ede8e0;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.05);
+  border: 1px solid #ebdccb;
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .dapur-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.09);
 }
 
-/* Kotak Nomor Meja di Sisi Kiri (Figma: Meja 2, Meja 4, Meja 5) */
+/* Kotak Nomor Meja di Sisi Kiri */
 .dapur-card-left-box {
   width: 220px;
   min-width: 200px;
-  background-color: #7b6f65; /* Warna taupe/abu-abu kecokelatan sesuai Figma */
+  background: linear-gradient(135deg, #844c1c 0%, #5a3414 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -230,7 +118,7 @@
   padding: 24px 16px;
   border-radius: 18px;
   margin: 12px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .dapur-card-table-text {

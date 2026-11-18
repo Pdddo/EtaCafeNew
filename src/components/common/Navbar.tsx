@@ -90,12 +90,20 @@ export default function Navbar({ role: roleProp, className }: NavbarProps) {
             </>
           )}
           {isDapur && (
-            <NavLink
-              to="/dapur/antrian"
-              className={({ isActive }) => `etacafe-navbar-link ${isActive ? 'active' : ''}`}
-            >
-              Antrean Dapur
-            </NavLink>
+            <>
+              <NavLink
+                to="/dapur/dashboard"
+                className={({ isActive }) => `etacafe-navbar-link ${isActive ? 'active' : ''}`}
+              >
+                Dashboard
+              </NavLink>
+              <NavLink
+                to="/dapur/antrian"
+                className={({ isActive }) => `etacafe-navbar-link ${isActive ? 'active' : ''}`}
+              >
+                Antrean Dapur
+              </NavLink>
+            </>
           )}
           {isManajer && (
             <>

@@ -40,12 +40,17 @@ def get_promo_aktif(db: Session = Depends(get_db)):
 
 
 @router.get("/tables", response_model=List[TableOut])
-def get_daftar_meja():
+def get_daftar_meja(
+    only_active: bool = Query(True, description="Hanya tampilkan meja aktif untuk pesanan pelanggan")
+):
     """
     Menampilkan daftar seluruh meja yang dapat dipilih untuk Dine In oleh Kasir & Pelanggan.
     Dikelola oleh Manajer secara dinamis.
     """
-    return get_all_tables()
+    tables = get_all_tables()
+    if only_active:
+        return [t for t in tables if t.get("is_active", True)]
+    return tables
 
 
 # ================= 1. KATALOG MENU (FR-03 & FR-04) (PUBLIK) =================
@@ -112,11 +117,20 @@ def checkout_pesanan(
         )
 
     # Validasi nomor meja jika metode QR Meja (BR-14)
-    if payload.order_type == OrderType.QR_MEJA and not payload.table_number:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Pemesanan melalui QR Code meja wajib menyertakan nomor meja."
-        )
+    if payload.order_type == OrderType.QR_MEJA:
+        if not payload.table_number:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Pemesanan melalui QR Code meja wajib menyertakan nomor meja."
+            )
+        # Validasi status meja: tidak boleh memesan di meja yang sedang nonaktif / pemeliharaan
+        all_tables = get_all_tables()
+        matched_table = next((t for t in all_tables if t.get("name", "").strip().lower() == payload.table_number.strip().lower()), None)
+        if matched_table and not matched_table.get("is_active", True):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"'{payload.table_number}' sedang dalam pemeliharaan (tidak aktif) dan tidak dapat digunakan."
+            )
 
     subtotal = 0.0
     items_to_create = []

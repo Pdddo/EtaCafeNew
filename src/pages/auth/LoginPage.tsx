@@ -33,7 +33,7 @@ export default function LoginPage() {
   const getRedirectPathByRole = (role: Role) => {
     switch (role) {
       case 'kasir': return '/kasir/dashboard';
-      case 'dapur': return '/dapur/antrian';
+      case 'dapur': return '/dapur/dashboard';
       case 'manajer': return '/manajer/dashboard';
       default: return '/pelanggan/home';
     }

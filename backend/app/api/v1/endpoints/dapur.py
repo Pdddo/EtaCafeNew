@@ -34,6 +34,25 @@ def antrean_pesanan_dapur(db: Session = Depends(get_db)):
     ).order_by(Order.confirmed_at.asc()).all()
 
 
+# ================= 1.1 RIWAYAT PESANAN SELESAI HARI INI (HARUS SEBELUM {order_id}) =================
+@router.get("/orders/completed-today", response_model=List[OrderOut])
+def pesanan_selesai_hari_ini(target_date: Optional[str] = None, db: Session = Depends(get_db)):
+    """
+    Menampilkan daftar pesanan yang telah diselesaikan oleh Dapur.
+    Jika target_date diberikan (format YYYY-MM-DD), filter sesuai tanggal.
+    Jika tidak, tampilkan pesanan selesai hari ini atau pesanan selesai terbaru.
+    """
+    query = db.query(Order).filter(Order.status == OrderStatus.SELESAI)
+    if target_date and target_date.lower() != "all":
+        query = query.filter(func.date(func.coalesce(Order.completed_at, Order.created_at)) == target_date)
+    else:
+        # Default: pesanan selesai hari ini
+        today_orders = query.filter(func.date(func.coalesce(Order.completed_at, Order.created_at)) == date.today()).all()
+        if today_orders:
+            return today_orders
+    return query.order_by(func.coalesce(Order.completed_at, Order.created_at).desc()).limit(100).all()
+
+
 # ================= 2. DETAIL PESANAN & CATATAN KHUSUS (FR-23) =================
 @router.get("/orders/{order_id}", response_model=OrderOut)
 def detail_pesanan_dapur(order_id: int, db: Session = Depends(get_db)):
@@ -101,21 +120,3 @@ def tandai_pesanan_selesai(order_id: int, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(order)
     return order
-
-
-@router.get("/orders/completed-today", response_model=List[OrderOut])
-def pesanan_selesai_hari_ini(target_date: Optional[str] = None, db: Session = Depends(get_db)):
-    """
-    Menampilkan daftar pesanan yang telah diselesaikan oleh Dapur.
-    Jika target_date diberikan (format YYYY-MM-DD), filter sesuai tanggal.
-    Jika tidak, tampilkan pesanan selesai hari ini atau pesanan selesai terbaru.
-    """
-    query = db.query(Order).filter(Order.status == OrderStatus.SELESAI)
-    if target_date and target_date.lower() != "all":
-        query = query.filter(func.date(func.coalesce(Order.completed_at, Order.created_at)) == target_date)
-    else:
-        # Default: pesanan selesai hari ini
-        today_orders = query.filter(func.date(func.coalesce(Order.completed_at, Order.created_at)) == date.today()).all()
-        if today_orders:
-            return today_orders
-    return query.order_by(func.coalesce(Order.completed_at, Order.created_at).desc()).limit(100).all()
