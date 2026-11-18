@@ -35,7 +35,10 @@ from app.schemas.schemas import (
     UserCreate,
     UserOut,
     SalesReportSummary,
+    TableCreate,
+    TableOut,
 )
+from app.core.tables_manager import get_all_tables, add_new_table, remove_table
 from app.core.security import get_password_hash
 from app.core.deps import require_role
 
@@ -258,12 +261,9 @@ def hapus_pengguna(
                 detail="Tidak dapat menghapus manajer terakhir."
             )
 
-    punya_pesanan = db.query(Order).filter(Order.customer_id == user_id).first()
-    if punya_pesanan:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Pengguna '{user.name}' sudah memiliki riwayat pesanan sehingga tidak dapat dihapus."
-        )
+    # Jika pengguna memiliki riwayat pesanan, lepaskan foreign key customer_id (set ke NULL)
+    # sehingga integritas riwayat pesanan & laporan omset penjualan tetap terjaga (audit trail aman)
+    db.query(Order).filter(Order.customer_id == user_id).update({Order.customer_id: None})
 
     db.delete(user)
     db.commit()
@@ -420,3 +420,21 @@ def ekspor_laporan_penjualan_csv(db: Session = Depends(get_db)):
         media_type="text/csv",
         headers={"Content-Disposition": "attachment; filename=laporan_penjualan_selesai.csv"}
     )
+
+
+# ================= 6. MANAJEMEN MEJA (FILE-BASED, ZERO DATABASE MIGRATION) =================
+@router.get("/tables", response_model=List[TableOut])
+def daftar_meja_manajer():
+    """Manajer melihat daftar seluruh meja."""
+    return get_all_tables()
+
+@router.post("/tables", response_model=TableOut, status_code=status.HTTP_201_CREATED)
+def tambah_meja_baru(payload: TableCreate):
+    """Manajer menambah meja baru."""
+    return add_new_table(payload.name)
+
+@router.delete("/tables/{table_id}", status_code=status.HTTP_204_NO_CONTENT)
+def hapus_meja_kafe(table_id: int):
+    """Manajer menghapus meja."""
+    remove_table(table_id)
+    return None

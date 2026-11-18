@@ -5,12 +5,20 @@ Departemen Matematika - Program Studi Sistem Informasi FMIPA Universitas Hasanud
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 from app.core.config import settings
 from app.db.database import engine, Base
 from app.api.v1.endpoints import auth, pelanggan, kasir, dapur, manajer
 
 # Otomatis membuat semua tabel jika belum ada
 Base.metadata.create_all(bind=engine)
+
+# Auto-migration: ubah image_url ke TEXT agar mendukung Base64 / URL panjang di PostgreSQL
+try:
+    with engine.begin() as conn:
+        conn.execute(text("ALTER TABLE menu_items ALTER COLUMN image_url TYPE TEXT;"))
+except Exception:
+    pass
 
 app = FastAPI(
     title=settings.PROJECT_NAME,

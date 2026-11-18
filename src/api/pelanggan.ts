@@ -27,6 +27,11 @@ export interface PromoData {
   is_active: boolean;
 }
 
+export interface TableData {
+  id: number;
+  name: string;
+}
+
 export interface OrderItemPayload {
   menu_item_id: number;
   quantity: number;
@@ -46,6 +51,7 @@ export interface OrderCreatePayload {
 export const PelangganAPI = {
   getCategories: () => request<CategoryData[]>('/pelanggan/categories'),
   getPromos: () => request<PromoData[]>('/pelanggan/promos'),
+  getTables: () => request<TableData[]>('/pelanggan/tables'),
   getMenu: (kategoriId?: number, search?: string) => {
     const query = new URLSearchParams();
     if (kategoriId) query.append('kategori_id', String(kategoriId));

@@ -16,12 +16,13 @@ from app.core.deps import get_current_user_optional
 from app.models.models import (
     Order, OrderItem, MenuItem, Category, Promo, OrderStatus, OrderType, User
 )
-from app.schemas.schemas import OrderCreate, OrderOut, MenuItemOut, CategoryOut, PromoOut
+from app.schemas.schemas import OrderCreate, OrderOut, MenuItemOut, CategoryOut, PromoOut, TableOut
+from app.core.tables_manager import get_all_tables
 
 router = APIRouter(prefix="/pelanggan", tags=["Role: Pelanggan"])
 
 
-# ================= 0. KATEGORI & PROMO AKTIF (PUBLIK) =================
+# ================= 0. KATEGORI, PROMO & MEJA AKTIF (PUBLIK) =================
 @router.get("/categories", response_model=List[CategoryOut])
 def get_kategori_menu(db: Session = Depends(get_db)):
     """
@@ -36,6 +37,15 @@ def get_promo_aktif(db: Session = Depends(get_db)):
     Menampilkan daftar voucher promo yang sedang aktif untuk digunakan pelanggan.
     """
     return db.query(Promo).filter(Promo.is_active == True).all()
+
+
+@router.get("/tables", response_model=List[TableOut])
+def get_daftar_meja():
+    """
+    Menampilkan daftar seluruh meja yang dapat dipilih untuk Dine In oleh Kasir & Pelanggan.
+    Dikelola oleh Manajer secara dinamis.
+    """
+    return get_all_tables()
 
 
 # ================= 1. KATALOG MENU (FR-03 & FR-04) (PUBLIK) =================

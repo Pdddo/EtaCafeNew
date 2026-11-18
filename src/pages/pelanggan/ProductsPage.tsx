@@ -21,54 +21,58 @@ export default function ProductsPage({ initialType = "coffee" }: { initialType?:
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const categoryMap: Record<number, string> = {
-    1: "Kopi & Minuman",
-    2: "Makanan Utama",
-    3: "Camilan & Snack",
-    4: "Dessert & Penutup",
-  };
+  // Buat lookup nama kategori secara dinamis dari database
+  const categoryMap = React.useMemo(() => {
+    const map: Record<number, string> = {};
+    categories.forEach((cat) => {
+      map[Number(cat.id)] = cat.name;
+    });
+    return map;
+  }, [categories]);
 
   useEffect(() => {
     let isMounted = true;
-    async function loadMenu() {
+    async function loadData() {
       setLoading(true);
       try {
-        const data = await PelangganAPI.getMenu();
+        const [cats, items] = await Promise.all([
+          PelangganAPI.getCategories(),
+          PelangganAPI.getMenu(),
+        ]);
         if (isMounted) {
-          setMenuItems(data);
-          setFilteredItems(data);
+          setCategories(cats || []);
+          setMenuItems(items || []);
+          setFilteredItems(items || []);
         }
       } catch (err) {
-        console.warn("Gagal memuat menu dari API, menggunakan fallback:", err);
+        console.warn("Gagal memuat data menu/kategori dari API:", err);
       } finally {
         if (isMounted) setLoading(false);
       }
     }
-    loadMenu();
+    loadData();
     return () => { isMounted = false; };
   }, []);
 
   useEffect(() => {
-    if (selectedCategoryId === "all") {
-      setFilteredItems(menuItems);
-    } else {
-      setFilteredItems(menuItems.filter((item) => item.category_id === Number(selectedCategoryId)));
-    }
-  }, [selectedCategoryId, menuItems]);
+    let result = menuItems;
 
-  useEffect(() => {
-    if (searchQuery.trim()) {
-      setFilteredItems(
-        menuItems.filter((item) =>
-          item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    } else if (selectedCategoryId === "all") {
-      setFilteredItems(menuItems);
-    } else {
-      setFilteredItems(menuItems.filter((item) => item.category_id === Number(selectedCategoryId)));
+    // 1. Filter berdasarkan kategori jika bukan "all"
+    if (selectedCategoryId !== "all") {
+      result = result.filter((item) => item.category_id === Number(selectedCategoryId));
     }
+
+    // 2. Filter berdasarkan kata kunci pencarian (tetap mempertahankan filter kategori yang aktif)
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (item) =>
+          (item.name && item.name.toLowerCase().includes(q)) ||
+          (item.description && item.description.toLowerCase().includes(q))
+      );
+    }
+
+    setFilteredItems(result);
   }, [searchQuery, selectedCategoryId, menuItems]);
 
   const handleAddToCart = (e: React.MouseEvent, item: MenuItemData) => {
@@ -91,12 +95,7 @@ export default function ProductsPage({ initialType = "coffee" }: { initialType?:
           >
             Semua Menu
           </button>
-          {[
-            { id: 1, name: "Kopi & Minuman" },
-            { id: 2, name: "Makanan Utama" },
-            { id: 3, name: "Camilan & Snack" },
-            { id: 4, name: "Dessert & Penutup" },
-          ].map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat.id}
               type="button"
@@ -134,7 +133,7 @@ export default function ProductsPage({ initialType = "coffee" }: { initialType?:
       ) : (
         <div className="products-menu-list">
           {filteredItems.map((item) => {
-            const catName = categoryMap[item.category_id] || "Menu";
+            const catName = item.category?.name || categoryMap[item.category_id] || "Menu";
 
             return (
               <div

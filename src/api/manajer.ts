@@ -44,6 +44,11 @@ export interface ManajerPromo {
   is_active: boolean;
 }
 
+export interface ManajerTable {
+  id: number | string;
+  name: string;
+}
+
 export interface SalesReportSummary {
   period: 'harian' | 'mingguan' | 'bulanan' | string;
   total_orders_completed: number;
@@ -241,6 +246,24 @@ export async function downloadSalesCsv(): Promise<void> {
   window.URL.revokeObjectURL(url);
 }
 
+// ================= 6. MEJA =================
+export async function getTables(): Promise<ManajerTable[]> {
+  return request<ManajerTable[]>('/manajer/tables');
+}
+
+export async function createTable(payload: { name: string }): Promise<ManajerTable> {
+  return request<ManajerTable>('/manajer/tables', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteTable(tableId: number | string): Promise<any> {
+  return request(`/manajer/tables/${tableId}`, {
+    method: 'DELETE',
+  });
+}
+
 export const ManajerAPI = {
   getMenus,
   createMenu,
@@ -259,6 +282,9 @@ export const ManajerAPI = {
   updatePromo,
   togglePromo,
   deletePromo,
+  getTables,
+  createTable,
+  deleteTable,
   getSalesSummary,
   downloadSalesCsv,
 };

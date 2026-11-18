@@ -135,6 +135,12 @@ export default function Navbar({ role: roleProp, className }: NavbarProps) {
               >
                 Promo
               </NavLink>
+              <NavLink
+                to="/manajer/meja"
+                className={({ isActive }) => `etacafe-navbar-link ${isActive ? 'active' : ''}`}
+              >
+                Kelola Meja
+              </NavLink>
             </>
           )}
 

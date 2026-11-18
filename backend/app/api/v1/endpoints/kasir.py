@@ -41,6 +41,8 @@ def antrean_pesanan_masuk_kasir(
         query = query.filter(Order.status == OrderStatus.SEDANG_DIPROSES)
     elif status_filter == "selesai":
         query = query.filter(Order.status == OrderStatus.SELESAI)
+    elif status_filter in ("dibatalkan", "batal"):
+        query = query.filter(Order.status == OrderStatus.DIBATALKAN)
     
     return query.order_by(Order.created_at.desc()).all()
 

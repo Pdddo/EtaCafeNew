@@ -50,7 +50,7 @@ class MenuItem(Base):
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
     price = Column(Float, nullable=False)
     description = Column(Text, nullable=True)
-    image_url = Column(String(500), nullable=True)
+    image_url = Column(Text, nullable=True)
     is_available = Column(Boolean, default=True, nullable=False) # FR-34 & BR-07
     created_at = Column(DateTime, default=datetime.utcnow)
 

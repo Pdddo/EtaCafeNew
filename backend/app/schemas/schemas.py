@@ -87,6 +87,14 @@ class PromoOut(PromoBase):
     class Config:
         from_attributes = True
 
+# ================= MEJA / TABLES (FILE-BASED) =================
+class TableCreate(BaseModel):
+    name: str
+
+class TableOut(BaseModel):
+    id: int
+    name: str
+
 # ================= ORDER =================
 class OrderItemCreate(BaseModel):
     menu_item_id: int

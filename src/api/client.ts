@@ -14,7 +14,9 @@ export const getAuthToken = (): string => {
 export const clearAuth = () => {
   localStorage.removeItem('etacafe_token');
   localStorage.removeItem('etacafe_user');
-  window.location.href = '/login';
+  if (window.location.pathname !== '/login') {
+    window.location.href = '/login';
+  }
 };
 
 // Generic fetch helper
@@ -30,8 +32,8 @@ export async function request<T>(endpoint: string, options?: RequestInit): Promi
 
   const response = await fetch(url, { ...options, headers });
 
-  // Jika 401, token expired atau invalid → logout otomatis
-  if (response.status === 401) {
+  // Jika 401 dan bukan request login/register, token expired → logout otomatis
+  if (response.status === 401 && !endpoint.startsWith('/auth/')) {
     clearAuth();
     throw new Error('Sesi kadaluarsa. Silakan login kembali.');
   }
@@ -77,6 +79,8 @@ export const KasirAPI = {
   confirmOrder: (orderId: number | string) =>
     request<any>(`/kasir/orders/${orderId}/confirm`, { method: 'POST' }),
   getCategories: () => request<any[]>('/pelanggan/categories'),
+  getPromos: () => request<any[]>('/pelanggan/promos'),
+  getTables: () => request<any[]>('/pelanggan/tables'),
   getMenu: (kategoriId?: number, search?: string) => {
     const query = new URLSearchParams();
     if (kategoriId) query.append('kategori_id', String(kategoriId));

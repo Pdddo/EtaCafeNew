@@ -1,4 +1,4 @@
-﻿// ============================================================
+// ============================================================
 // HALAMAN : AntrianPage (Kitchen Display System - Role Dapur)
 // PERAN   : Dapur
 // REF SRS : FR-19, FR-22, FR-23, FR-24, FR-25, BR-09, BR-10
@@ -387,38 +387,6 @@ export default function AntrianPage() {
           </button>
         </div>
       </div>
-
-      {/* 2. NAVBAR HEADER COKELAT (Figma: "Coffee Shop" | "Products" "Checkout") */}
-      <header className="dapur-header-navbar">
-        <span className="dapur-header-brand" onClick={() => setActiveTab('dikonfirmasi')}>
-          Coffee Shop
-        </span>
-
-        <div className="dapur-header-links">
-          <button
-            type="button"
-            className="dapur-header-link"
-            onClick={() => setActiveTab('dikonfirmasi')}
-          >
-            Products
-          </button>
-          <button
-            type="button"
-            className="dapur-header-link"
-            onClick={() => setActiveTab('proses')}
-          >
-            Checkout
-          </button>
-          <button
-            type="button"
-            className="dapur-header-logout"
-            onClick={handleLogout}
-            title="Keluar dari sesi Dapur"
-          >
-            Logout
-          </button>
-        </div>
-      </header>
 
       {/* 3. FILTER TANGGAL (Hanya Tampil di Tab "Selesai") */}
       {activeTab === 'selesai' && (

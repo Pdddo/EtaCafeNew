@@ -16,7 +16,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart, formatRupiah } from '../../context/CartContext';
-import { PelangganAPI, PromoData } from '../../api/pelanggan';
+import { PelangganAPI, PromoData, TableData } from '../../api/pelanggan';
 import './CartPage.css';
 
 export default function CartPage() {
@@ -30,6 +30,7 @@ export default function CartPage() {
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [discountAmount, setDiscountAmount] = useState(0);
   const [availablePromos, setAvailablePromos] = useState<PromoData[]>([]);
+  const [availableTables, setAvailableTables] = useState<TableData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,12 +38,23 @@ export default function CartPage() {
     PelangganAPI.getPromos()
       .then((data) => setAvailablePromos(data.filter((p) => p.is_active)))
       .catch((err) => console.warn('Gagal memuat promo:', err));
+
+    PelangganAPI.getTables()
+      .then((tables) => {
+        if (tables && tables.length > 0) {
+          setAvailableTables(tables);
+          setTableNumber(tables[0].name);
+        }
+      })
+      .catch((err) => console.warn('Gagal memuat meja:', err));
   }, []);
 
   // Perhitungan Biaya
-  const taxAmount = Math.round(subtotal * 0.1); // Pajak 10%
+  // Pajak dihitung dari subtotal SETELAH diskon (konsisten dengan backend)
+  const taxableBase = Math.max(0, subtotal - discountAmount);
+  const taxAmount = Math.round(taxableBase * 0.1); // Pajak 10%
   const serviceFee = subtotal > 0 ? 3000 : 0; // Biaya layanan / kemasan
-  const totalAmount = Math.max(0, subtotal + taxAmount + serviceFee - discountAmount);
+  const totalAmount = Math.max(0, taxableBase + taxAmount + serviceFee);
 
   const handleApplyPromo = (codeToApply?: string) => {
     const code = (codeToApply || promoCode).trim().toUpperCase();
@@ -85,7 +97,7 @@ export default function CartPage() {
       customer_name: userName,
       customer_phone: '08123456789',
       order_type: orderType,
-      table_number: tableNumber,
+      table_number: orderType === 'qr_meja' ? tableNumber : undefined,
       payment_method: 'qris' as const,
       promo_code: appliedPromo || undefined,
       items: cart.map((i) => ({
@@ -151,11 +163,13 @@ export default function CartPage() {
                     onChange={(e) => setTableNumber(e.target.value)}
                     className="table-select"
                   >
-                    <option value="Meja 1">Meja 1</option>
-                    <option value="Meja 2">Meja 2</option>
-                    <option value="Meja 3">Meja 3</option>
-                    <option value="Meja 4">Meja 4</option>
-                    <option value="Meja 5">Meja 5</option>
+                    {availableTables.length > 0 ? (
+                      availableTables.map((t) => (
+                        <option key={t.id} value={t.name}>{t.name}</option>
+                      ))
+                    ) : (
+                      <option value="Meja 1">Meja 1</option>
+                    )}
                   </select>
                 </div>
               )}

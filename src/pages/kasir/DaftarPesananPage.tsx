@@ -15,7 +15,7 @@ export default function DaftarPesananPage() {
   const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedFilter, setSelectedFilter] = useState<'menunggu' | 'dikonfirmasi' | 'proses' | 'selesai' | 'all'>('all');
+  const [selectedFilter, setSelectedFilter] = useState<'menunggu' | 'dikonfirmasi' | 'proses' | 'selesai' | 'dibatalkan' | 'all'>('all');
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -124,7 +124,7 @@ export default function DaftarPesananPage() {
 
       {/* Filter Tabs */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
-        {(['all', 'menunggu', 'dikonfirmasi', 'proses', 'selesai'] as const).map((filterKey) => {
+        {(['all', 'menunggu', 'dikonfirmasi', 'proses', 'selesai', 'dibatalkan'] as const).map((filterKey) => {
           const label =
             filterKey === 'all'
               ? 'Semua Pesanan'
@@ -134,7 +134,9 @@ export default function DaftarPesananPage() {
               ? 'Dikonfirmasi (Dapur)'
               : filterKey === 'proses'
               ? 'Sedang Dimasak'
-              : 'Selesai Saji';
+              : filterKey === 'selesai'
+              ? 'Selesai Saji'
+              : 'Dibatalkan';
 
           const isActive = selectedFilter === filterKey;
 

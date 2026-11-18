@@ -50,6 +50,7 @@ import ManajerKelolaMenuPage from '../pages/manajer/KelolaMenuPage';
 import ManajerKelolaKategoriPage from '../pages/manajer/KelolaKategoriPage';
 import ManajerKelolaPromoPage from '../pages/manajer/KelolaPromoPage';
 import ManajerKelolaPenggunaPage from '../pages/manajer/KelolaPenggunaPage';
+import ManajerKelolaMejaPage from '../pages/manajer/KelolaMejaPage';
 import ManajerLaporanPage from '../pages/manajer/LaporanPage';
 
 // ===================== LAYOUTS =====================
@@ -112,7 +113,20 @@ function ManajerRoute() {
 }
 
 export default function AppRouter() {
-  const { isLoading, isAuthenticated } = useAuth();
+  const { isLoading, isAuthenticated, user } = useAuth();
+
+  const getHomePathByRole = (role?: string) => {
+    switch (role) {
+      case 'kasir':
+        return '/kasir/dashboard';
+      case 'dapur':
+        return '/dapur/antrian';
+      case 'manajer':
+        return '/manajer/dashboard';
+      default:
+        return '/pelanggan/home';
+    }
+  };
 
   if (isLoading) {
     return <div className="auth-loading">Memuat sesi...</div>;
@@ -122,15 +136,25 @@ export default function AppRouter() {
     <BrowserRouter>
       <Routes>
         {/* ================= PUBLIC ROUTES ================= */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? <Navigate to={getHomePathByRole(user?.role)} replace /> : <LoginPage />
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            isAuthenticated ? <Navigate to={getHomePathByRole(user?.role)} replace /> : <RegisterPage />
+          }
+        />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
         {/* Redirect root */}
         <Route
           path="/"
           element={
-            isAuthenticated ? <Navigate to="/pelanggan/home" replace /> : <Navigate to="/login" replace />
+            isAuthenticated ? <Navigate to={getHomePathByRole(user?.role)} replace /> : <Navigate to="/login" replace />
           }
         />
 
@@ -205,6 +229,7 @@ export default function AppRouter() {
           <Route path="kategori" element={<ManajerKelolaKategoriPage />} />
           <Route path="promo" element={<ManajerKelolaPromoPage />} />
           <Route path="pengguna" element={<ManajerKelolaPenggunaPage />} />
+          <Route path="meja" element={<ManajerKelolaMejaPage />} />
           <Route path="laporan" element={<ManajerLaporanPage />} />
         </Route>
 
